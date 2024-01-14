@@ -17,5 +17,4 @@ setup(
     install_requires=requirements,
     zip_safe=False,
     python_requires="==3.11",
-
 )

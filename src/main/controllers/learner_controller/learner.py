@@ -2,7 +2,9 @@ from typing import List
 
 import tensorflow as tf
 
-from src.main.controllers.buffer_controller.replay_buffer_controller import ReplayBufferController
+from src.main.controllers.buffer_controller.replay_buffer_controller import (
+    ReplayBufferController,
+)
 from src.main.model.actor_model_store.actor_model_store import ActorModelStore
 from src.main.model.actor_critic.actor import Actor
 from src.main.model.actor_critic.critic import Critic

@@ -3,7 +3,9 @@ from src.main.controllers.learner_controller.learner import Learner
 
 class LearnerFactory:
     @staticmethod
-    def create_learners(replay_buffer_controllers, par_services, num_states, num_actions):
+    def create_learners(
+        replay_buffer_controllers, par_services, num_states, num_actions
+    ):
         """
         Create a new Learner for each buffer passed as parameter
         :param replay_buffer_controllers: Replay buffer controllers
