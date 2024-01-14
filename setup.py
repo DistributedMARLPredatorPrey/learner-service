@@ -4,7 +4,7 @@ with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
 setup(
-    name="learner-service",
+    name="learner_controller-service",
     description="Learner service",
     url="#",
     author="Luca Fabri",
