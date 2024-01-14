@@ -2,16 +2,16 @@ from typing import List
 
 import tensorflow as tf
 
+from src.main.controllers.buffer_controller.replay_buffer_controller import ReplayBufferController
 from src.main.model.actor_model_store.actor_model_store import ActorModelStore
 from src.main.model.actor_critic.actor import Actor
 from src.main.model.actor_critic.critic import Critic
-from src.main.model.environment.buffer.buffer import Buffer
 
 
 class Learner:
     def __init__(
         self,
-        buffer: Buffer,
+        replay_buffer_controller: ReplayBufferController,
         par_services: List[ActorModelStore],
         num_states: int,
         num_actions: int,
@@ -24,14 +24,14 @@ class Learner:
         In particular, the learning follows the MADDPG algorithm.
         Moreover, it sets the latest actor network to each agent's ParameterService, through which each
         agent will take an action given a state.
-        :param buffer: shared buffer
+        :param replay_buffer_controller: shared buffer
         :param par_services: agents' ParameterService
         :param num_states: state size
         :param num_actions: number of actions allowed
         :param num_agents: number of agents of the same type
         """
         # Parameters
-        self.buffer = buffer
+        self.replay_buffer_controller = replay_buffer_controller
         self.par_services = par_services
         self.num_states = num_states
         self.num_actions = num_actions
@@ -113,7 +113,7 @@ class Learner:
             action_batch,
             reward_batch,
             next_state_batch,
-        ) = self.buffer.sample_batch()
+        ) = self.replay_buffer_controller.sample_batch()
 
         target_actions = []
         for j in range(self.num_agents):
