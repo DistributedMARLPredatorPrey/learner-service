@@ -1,0 +1,11 @@
+all:
+  environment:
+    num_predators: 10
+    num_preys: 10
+    acc_lower_bound: -1
+    acc_upper_bound: 1
+    num_states: 14
+    num_actions: 2
+
+learner:
+  batch_size: 64
