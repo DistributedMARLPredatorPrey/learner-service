@@ -1,11 +1,8 @@
-from typing import List
-
 import tensorflow as tf
 
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
-from src.main.model.actor_model_store.actor_model_store import ActorModelStore
 from src.main.model.actor_critic.actor import Actor
 from src.main.model.actor_critic.critic import Critic
 
@@ -14,7 +11,6 @@ class Learner:
     def __init__(
         self,
         replay_buffer_controller: ReplayBufferController,
-        par_services: List[ActorModelStore],
         num_states: int,
         num_actions: int,
         num_agents: int,
@@ -27,14 +23,13 @@ class Learner:
         Moreover, it sets the latest actor network to each agent's ParameterService, through which each
         agent will take an action given a state.
         :param replay_buffer_controller: shared buffer
-        :param par_services: agents' ParameterService
         :param num_states: state size
         :param num_actions: number of actions allowed
         :param num_agents: number of agents of the same type
         """
         # Parameters
         self.replay_buffer_controller = replay_buffer_controller
-        self.par_services = par_services
+        # self.par_services = par_services
         self.num_states = num_states
         self.num_actions = num_actions
         self.num_agents = num_agents
@@ -70,7 +65,7 @@ class Learner:
             self.target_actors.append(Actor(num_states).model)
             self.target_actors[j].set_weights(self.actor_models[j].get_weights())
 
-            self.par_services[j].set_model(self.actor_models[j])
+            # self.par_services[j].set_model(self.actor_models[j])
 
             # Make target models non trainable
             self.target_actors[j].trainable = False
