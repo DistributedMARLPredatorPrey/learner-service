@@ -4,7 +4,7 @@ with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
 setup(
-    name="learner-service",
+    name="learner_controller-service",
     description="Learner service",
     url="#",
     author="Luca Fabri",
@@ -16,6 +16,5 @@ setup(
     test_suite="src.test",
     install_requires=requirements,
     zip_safe=False,
-    python_requires="==3.11",
-
+    #python_requires="==3.11",
 )
