@@ -16,5 +16,5 @@ setup(
     test_suite="src.test",
     install_requires=requirements,
     zip_safe=False,
-    python_requires="==3.11",
+    #python_requires="==3.11",
 )
