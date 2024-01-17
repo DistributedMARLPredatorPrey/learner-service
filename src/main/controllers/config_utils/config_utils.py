@@ -3,7 +3,7 @@ import yaml
 
 from src.main.parser.config import EnvironmentConfig
 
-from src.main.controllers.config_utils.config import LearnerConfig
+from src.main.controllers.config_utils.config import ReplayBufferServiceConfig
 
 
 class ConfigUtils:
@@ -35,12 +35,12 @@ class ConfigUtils:
             num_actions=env_conf["num_actions"],
         )
 
-    def learner_configuration(self) -> LearnerConfig:
+    def replay_buffer_configuration(self) -> ReplayBufferServiceConfig:
         """
-        Creates an LearnerConfig object by extracting information from env variables
-        :return: learner config
+        Creates an ReplayBufferConfig object by extracting information from env variables
+        :return: replay buffer config
         """
-        return LearnerConfig(
+        return ReplayBufferServiceConfig(
             agent_type=os.environ.get("AGENT_TYPE"),
             batch_size=int(os.environ.get("BATCH_SIZE")),
             replay_buffer_host=os.environ.get("REPLAY_BUFFER_HOST"),

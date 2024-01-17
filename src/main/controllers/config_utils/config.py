@@ -16,9 +16,9 @@ class EnvironmentConfig:
 
 
 @dataclass(frozen=True)
-class LearnerConfig:
+class ReplayBufferServiceConfig:
     """
-    Sum type modelling the learner configuration.
+    Sum type modelling the replay buffer configuration.
     """
 
     batch_size: int

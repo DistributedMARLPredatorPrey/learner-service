@@ -5,15 +5,14 @@ import pandas as pd
 import tensorflow as tf
 from requests import Response
 
+from src.main.controllers.config_utils.config import ReplayBufferServiceConfig
+
 
 class ReplayBufferController:
-    def __init__(self, batch_size, num_states, num_actions, num_agents):
-        self.replay_buffer_host = "172.17.0.2"
-        self.replay_buffer_port = 80
-        self.batch_size = batch_size
-        self.num_states = num_states
-        self.num_actions = num_actions
-        self.num_agents = num_agents
+    def __init__(self, replay_buffer_service_config: ReplayBufferServiceConfig):
+        self.replay_buffer_host = replay_buffer_service_config.replay_buffer_host
+        self.replay_buffer_port = replay_buffer_service_config.replay_buffer_port
+        self.batch_size = replay_buffer_service_config.batch_size
 
     def sample_batch(self) -> tuple:
         """
