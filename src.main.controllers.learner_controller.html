@@ -46,8 +46,14 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">src.main.controllers.learner_controller package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#src-main-controllers-learner-controller-learner-module">src.main.controllers.learner_controller.learner module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-src.main.controllers.learner_controller.learner">src.main.controllers.learner_controller.learner module</a><ul>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.learner.Learner"><code class="docutils literal notranslate"><span class="pre">Learner</span></code></a><ul>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.learner.Learner.update"><code class="docutils literal notranslate"><span class="pre">Learner.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.main.controllers.learner_controller">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -81,11 +87,24 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="src-main-controllers-learner-controller-learner-module">
-<h2>src.main.controllers.learner_controller.learner module<a class="headerlink" href="#src-main-controllers-learner-controller-learner-module" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.learner_controller.learner">
+<span id="src-main-controllers-learner-controller-learner-module"></span><h2>src.main.controllers.learner_controller.learner module<a class="headerlink" href="#module-src.main.controllers.learner_controller.learner" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.learner.Learner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.main.controllers.learner_controller.learner.</span></span><span class="sig-name descname"><span class="pre">Learner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replay_buffer_controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.main.controllers.buffer_controller.html#src.main.controllers.buffer_controller.replay_buffer_controller.ReplayBufferController" title="src.main.controllers.buffer_controller.replay_buffer_controller.ReplayBufferController"><span class="pre">ReplayBufferController</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.learner_controller.learner.Learner" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.learner.Learner.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.learner_controller.learner.Learner.update" title="Link to this definition"></a></dt>
+<dd><p>Updates the Actor-Critic network of each agent, following the MADDPG algorithm.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.learner_controller">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.main.controllers.learner_controller" title="Link to this heading"></a></h2>
 </section>
 </section>
 

@@ -46,9 +46,34 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">src.main.controllers.config_utils package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#src-main-controllers-config-utils-config-module">src.main.controllers.config_utils.config module</a></li>
-<li><a class="reference internal" href="#src-main-controllers-config-utils-config-utils-module">src.main.controllers.config_utils.config_utils module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-src.main.controllers.config_utils.config">src.main.controllers.config_utils.config module</a><ul>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig</span></code></a><ul>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.acc_lower_bound"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.acc_lower_bound</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.acc_upper_bound"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.acc_upper_bound</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_actions"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.num_actions</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_predators"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.num_predators</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_preys"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.num_preys</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_states"><code class="docutils literal notranslate"><span class="pre">EnvironmentConfig.num_states</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig"><code class="docutils literal notranslate"><span class="pre">ReplayBufferServiceConfig</span></code></a><ul>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.agent_type"><code class="docutils literal notranslate"><span class="pre">ReplayBufferServiceConfig.agent_type</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.batch_size"><code class="docutils literal notranslate"><span class="pre">ReplayBufferServiceConfig.batch_size</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_host"><code class="docutils literal notranslate"><span class="pre">ReplayBufferServiceConfig.replay_buffer_host</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_port"><code class="docutils literal notranslate"><span class="pre">ReplayBufferServiceConfig.replay_buffer_port</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.main.controllers.config_utils.config_utils">src.main.controllers.config_utils.config_utils module</a><ul>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config_utils.ConfigUtils"><code class="docutils literal notranslate"><span class="pre">ConfigUtils</span></code></a><ul>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config_utils.ConfigUtils.environment_configuration"><code class="docutils literal notranslate"><span class="pre">ConfigUtils.environment_configuration()</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.config_utils.config_utils.ConfigUtils.replay_buffer_configuration"><code class="docutils literal notranslate"><span class="pre">ConfigUtils.replay_buffer_configuration()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.main.controllers.config_utils">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -82,14 +107,99 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="src-main-controllers-config-utils-config-module">
-<h2>src.main.controllers.config_utils.config module<a class="headerlink" href="#src-main-controllers-config-utils-config-module" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.config_utils.config">
+<span id="src-main-controllers-config-utils-config-module"></span><h2>src.main.controllers.config_utils.config module<a class="headerlink" href="#module-src.main.controllers.config_utils.config" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.main.controllers.config_utils.config.</span></span><span class="sig-name descname"><span class="pre">EnvironmentConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_predators</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_preys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc_lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc_upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sum type modelling the environment configuration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.acc_lower_bound">
+<span class="sig-name descname"><span class="pre">acc_lower_bound</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.acc_lower_bound" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.acc_upper_bound">
+<span class="sig-name descname"><span class="pre">acc_upper_bound</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.acc_upper_bound" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.num_actions">
+<span class="sig-name descname"><span class="pre">num_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.num_predators">
+<span class="sig-name descname"><span class="pre">num_predators</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_predators" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.num_preys">
+<span class="sig-name descname"><span class="pre">num_preys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_preys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.EnvironmentConfig.num_states">
+<span class="sig-name descname"><span class="pre">num_states</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.EnvironmentConfig.num_states" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.ReplayBufferServiceConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.main.controllers.config_utils.config.</span></span><span class="sig-name descname"><span class="pre">ReplayBufferServiceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replay_buffer_host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replay_buffer_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sum type modelling the replay buffer configuration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.ReplayBufferServiceConfig.agent_type">
+<span class="sig-name descname"><span class="pre">agent_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.agent_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.ReplayBufferServiceConfig.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.batch_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_host">
+<span class="sig-name descname"><span class="pre">replay_buffer_host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_host" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_port">
+<span class="sig-name descname"><span class="pre">replay_buffer_port</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig.replay_buffer_port" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="src-main-controllers-config-utils-config-utils-module">
-<h2>src.main.controllers.config_utils.config_utils module<a class="headerlink" href="#src-main-controllers-config-utils-config-utils-module" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.config_utils.config_utils">
+<span id="src-main-controllers-config-utils-config-utils-module"></span><h2>src.main.controllers.config_utils.config_utils module<a class="headerlink" href="#module-src.main.controllers.config_utils.config_utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config_utils.ConfigUtils">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.main.controllers.config_utils.config_utils.</span></span><span class="sig-name descname"><span class="pre">ConfigUtils</span></span><a class="headerlink" href="#src.main.controllers.config_utils.config_utils.ConfigUtils" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config_utils.ConfigUtils.environment_configuration">
+<span class="sig-name descname"><span class="pre">environment_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.main.controllers.config_utils.config.EnvironmentConfig" title="src.main.controllers.config_utils.config.EnvironmentConfig"><span class="pre">EnvironmentConfig</span></a></span></span><a class="headerlink" href="#src.main.controllers.config_utils.config_utils.ConfigUtils.environment_configuration" title="Link to this definition"></a></dt>
+<dd><p>Creates an EnvironmentConfig object by extracting information from the config file,
+whose path is specified by GLOBAL_CONFIG_PATH environment variable.
+:return: environment config</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.main.controllers.config_utils.config_utils.ConfigUtils.replay_buffer_configuration">
+<span class="sig-name descname"><span class="pre">replay_buffer_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.main.controllers.config_utils.config.ReplayBufferServiceConfig" title="src.main.controllers.config_utils.config.ReplayBufferServiceConfig"><span class="pre">ReplayBufferServiceConfig</span></a></span></span><a class="headerlink" href="#src.main.controllers.config_utils.config_utils.ConfigUtils.replay_buffer_configuration" title="Link to this definition"></a></dt>
+<dd><p>Creates an ReplayBufferConfig object by extracting information from env variables
+:return: replay buffer config</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.config_utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.main.controllers.config_utils" title="Link to this heading"></a></h2>
 </section>
 </section>
 
