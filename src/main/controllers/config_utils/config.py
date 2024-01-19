@@ -24,4 +24,4 @@ class ReplayBufferServiceConfig:
     batch_size: int
     agent_type: str
     replay_buffer_host: str
-    replay_buffer_port: str
+    replay_buffer_port: int

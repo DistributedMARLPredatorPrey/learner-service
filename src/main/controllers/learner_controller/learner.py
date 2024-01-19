@@ -111,7 +111,6 @@ class Learner:
             reward_batch,
             next_state_batch,
         ) = self.replay_buffer_controller.sample_batch()
-
         target_actions = []
         for j in range(self.num_agents):
             target_actions.append(
@@ -123,13 +122,11 @@ class Learner:
                     training=True,
                 )
             )
-
         action_batch_reshape = []
         for j in range(self.num_agents):
             action_batch_reshape.append(
                 action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
-
         return self._update_critic_networks(
             state_batch,
             reward_batch,

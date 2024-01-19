@@ -1,9 +1,11 @@
 import os
+
 import yaml
 
-from src.main.parser.config import EnvironmentConfig
-
-from src.main.controllers.config_utils.config import ReplayBufferServiceConfig
+from src.main.controllers.config_utils.config import (
+    ReplayBufferServiceConfig,
+    EnvironmentConfig,
+)
 
 
 class ConfigUtils:
@@ -44,5 +46,5 @@ class ConfigUtils:
             agent_type=os.environ.get("AGENT_TYPE"),
             batch_size=int(os.environ.get("BATCH_SIZE")),
             replay_buffer_host=os.environ.get("REPLAY_BUFFER_HOST"),
-            replay_buffer_port=os.environ.get("REPLAY_BUFFER_PORT"),
+            replay_buffer_port=int(os.environ.get("REPLAY_BUFFER_PORT")),
         )

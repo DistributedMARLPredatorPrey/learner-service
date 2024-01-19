@@ -1,3 +1,4 @@
+import ast
 from typing import Dict, Tuple
 
 import requests
@@ -13,6 +14,7 @@ class ReplayBufferController:
         self.replay_buffer_host = replay_buffer_service_config.replay_buffer_host
         self.replay_buffer_port = replay_buffer_service_config.replay_buffer_port
         self.batch_size = replay_buffer_service_config.batch_size
+        self.agent_type = replay_buffer_service_config.agent_type
 
     def sample_batch(self) -> tuple:
         """
@@ -29,7 +31,8 @@ class ReplayBufferController:
         :return: Response from the remote server
         """
         return requests.get(
-            f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/batch_data/{self.batch_size}"
+            f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/"
+            f"batch_data/{self.agent_type}/{self.batch_size}"
         )
 
     @staticmethod
@@ -41,12 +44,13 @@ class ReplayBufferController:
         """
         return tuple(
             [
-                tf.convert_to_tensor(
+                tf.convert_to_tensor(v, dtype=tf.float32)
+                for v in [
                     [
-                        [float(vv) for vv in v.split("|")]
-                        for v in list(data_dict[column].values())
+                        ast.literal_eval(vv) if isinstance(vv, str) else vv
+                        for vv in list(data_dict[column].values())
                     ]
-                )
-                for column in ["State", "Action", "Reward", "Next state"]
+                    for column in ["State", "Action", "Reward", "Next state"]
+                ]
             ]
         )
