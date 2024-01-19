@@ -8,7 +8,9 @@ Welcome to Learner Service's documentation!
 
 The Learner Service is responsible to train a Multi-Agent Reinforcement Learning (MARL) algorithm for a single
 Predator-Prey application.
+
 It samples batches of data from a centralized distributed Replay Buffer and updates the models consequently.
+
 In particular it makes use of the MADDPG (Multi-Agent Deep Deterministic Policy Gradient) algorithm,
 composed of a centralized critic and decentralized actor networks.
 
