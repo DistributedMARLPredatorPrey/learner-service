@@ -1,15 +1,20 @@
-# import unittest
-#
-# from src.main.controllers.buffer_controller.replay_buffer_controller import (
-#     ReplayBufferController,
-# )
-#
-#
+import unittest
+
+from src.main.controllers.buffer_controller.replay_buffer_controller import (
+    ReplayBufferController,
+)
+from src.main.controllers.config_utils.config import ReplayBufferServiceConfig
+
+
 # class ReplayBufferControllerTest(unittest.TestCase):
-#
 #     batch_size = 10
 #     replay_buffer_controller: ReplayBufferController = ReplayBufferController(
-#         batch_size
+#         ReplayBufferServiceConfig(
+#             batch_size=batch_size,
+#             agent_type="predator",
+#             replay_buffer_host="172.18.0.2",
+#             replay_buffer_port=80,
+#         )
 #     )
 #
 #     def test_batch_data(self):

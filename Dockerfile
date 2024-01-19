@@ -5,4 +5,4 @@ WORKDIR /usr/app
 COPY . .
 RUN pip install .
 
-CMD [ "python3", "src/main/view/main.py"]
+CMD [ "python3", "-m", "src.main.view.main"]

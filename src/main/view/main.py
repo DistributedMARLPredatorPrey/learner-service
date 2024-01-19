@@ -3,26 +3,31 @@ from src.main.controllers.buffer_controller.replay_buffer_controller import (
 )
 
 from src.main.controllers.learner_controller.learner import Learner
-from src.main.controllers.parser.conf import EnvironmentConf, LearnerConf
-from src.main.controllers.parser.yaml_conf_parser import YamlConfParser
+from src.main.controllers.config_utils.config import (
+    EnvironmentConfig,
+    ReplayBufferServiceConfig,
+)
+from src.main.controllers.config_utils.config_utils import ConfigUtils
 
 if __name__ == "__main__":
-
-    conf: YamlConfParser = YamlConfParser()
-    env_conf: EnvironmentConf = conf.environment_configuration()
-    learner_conf: LearnerConf = conf.learner_configuration()
-
-    learner = Learner(
-        replay_buffer_controller=ReplayBufferController(
-            batch_size=learner_conf.batch_size,
-            num_states=env_conf.num_states,
-            num_actions=env_conf.num_actions,
-            num_agents=env_conf.num_predators,
-        ),
-        num_agents=env_conf.n,
-        num_states=num_states,
-        num_actions=num_actions,
+    config_utils: ConfigUtils = ConfigUtils()
+    env_config: EnvironmentConfig = config_utils.environment_configuration()
+    replay_buffer_service_config: ReplayBufferServiceConfig = (
+        config_utils.replay_buffer_configuration()
     )
 
+    # Create the learner, passing to it a replay buffer controller
+    learner = Learner(
+        replay_buffer_controller=ReplayBufferController(replay_buffer_service_config),
+        num_agents=(
+            # Get the number of agents based whether the type is predator or prey
+            env_config.num_predators
+            if replay_buffer_service_config.agent_type == "predator"
+            else env_config.num_preys
+        ),
+        num_states=env_config.num_states,
+        num_actions=env_config.num_actions,
+    )
+    # Train the models until the process is being stopped
     while True:
         learner.update()
