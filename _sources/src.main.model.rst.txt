@@ -1,0 +1,19 @@
+src.main.model package
+======================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.main.model.actor_critic
+   src.main.model.actor_model_store
+
+Module contents
+---------------
+
+.. automodule:: src.main.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
