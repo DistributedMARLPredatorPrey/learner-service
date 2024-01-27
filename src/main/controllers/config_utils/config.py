@@ -25,3 +25,8 @@ class ReplayBufferServiceConfig:
     agent_type: str
     replay_buffer_host: str
     replay_buffer_port: int
+
+
+@dataclass
+class LearnerServiceConfig:
+    pubsub_broker: str

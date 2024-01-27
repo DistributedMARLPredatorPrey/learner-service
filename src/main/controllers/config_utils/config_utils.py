@@ -5,6 +5,7 @@ import yaml
 from src.main.controllers.config_utils.config import (
     ReplayBufferServiceConfig,
     EnvironmentConfig,
+    LearnerServiceConfig,
 )
 
 
@@ -48,3 +49,6 @@ class ConfigUtils:
             replay_buffer_host=os.environ.get("REPLAY_BUFFER_HOST"),
             replay_buffer_port=int(os.environ.get("REPLAY_BUFFER_PORT")),
         )
+
+    def learner_service_configuration(self) -> LearnerServiceConfig:
+        return LearnerServiceConfig(pubsub_broker=os.environ.get("BROKER_HOST"))

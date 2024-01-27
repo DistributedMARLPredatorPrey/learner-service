@@ -1,6 +1,8 @@
 import tensorflow as tf
 
-from src.main.controllers.actor_sender_controller.actor_sender_controller import ActorSenderController
+from src.main.controllers.actor_sender_controller.actor_sender_controller import (
+    ActorSenderController,
+)
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
@@ -15,6 +17,7 @@ class Learner:
         num_states: int,
         num_actions: int,
         num_agents: int,
+        actor_sender_controller: ActorSenderController,
     ):
         """
         Initializes a Learner.
@@ -72,7 +75,7 @@ class Learner:
             self.target_actors[j].trainable = False
             self.actor_models[j].compile(loss="mse", optimizer=self.actor_optimizers[j])
 
-            self.actor_sender_controller = ActorSenderController()
+            self.actor_sender_controller = actor_sender_controller
 
         # Discount factor for future rewards
         self.gamma = 0.95
@@ -89,7 +92,7 @@ class Learner:
         self._update_targets()
         self.actor_sender_controller.send_actors(self.actor_models)
 
-    @tf.function
+    @tf.functionL
     def _update_targets(self):
         """
         Slowly updates target parameters according to the tau rate <<1

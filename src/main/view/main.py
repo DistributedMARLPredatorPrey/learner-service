@@ -1,3 +1,6 @@
+from src.main.controllers.actor_sender_controller.actor_sender_controller import (
+    ActorSenderController,
+)
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
@@ -27,6 +30,9 @@ if __name__ == "__main__":
         ),
         num_states=env_config.num_states,
         num_actions=env_config.num_actions,
+        actor_sender_controller=ActorSenderController(
+            config_utils.learner_service_configuration().pubsub_broker
+        ),
     )
     # Train the models until the process is being stopped
     while True:
