@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+from src.main.controllers.actor_sender_controller.actor_sender_controller import ActorSenderController
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
@@ -71,6 +72,8 @@ class Learner:
             self.target_actors[j].trainable = False
             self.actor_models[j].compile(loss="mse", optimizer=self.actor_optimizers[j])
 
+            self.actor_sender_controller = ActorSenderController()
+
         # Discount factor for future rewards
         self.gamma = 0.95
 
@@ -82,8 +85,9 @@ class Learner:
         Updates the Actor-Critic network of each agent, following the MADDPG algorithm.
         :return:
         """
-        self._update_actors(self._update_critic())
+        self._update_actors(self._update_critics())
         self._update_targets()
+        self.actor_sender_controller.send_actors(self.actor_models)
 
     @tf.function
     def _update_targets(self):
@@ -99,7 +103,7 @@ class Learner:
             for a, b in zip(target_weights, weights):
                 a.assign(b * self.tau + a * (1 - self.tau))
 
-    def _update_critic(self):
+    def _update_critics(self):
         """
         Updates the Critic networks by reshaping the sampled data.
         :return:
