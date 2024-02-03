@@ -92,7 +92,7 @@ class Learner:
         self._update_targets()
         self.actor_sender_controller.send_actors(self.actor_models)
 
-    @tf.functionL
+    @tf.function
     def _update_targets(self):
         """
         Slowly updates target parameters according to the tau rate <<1

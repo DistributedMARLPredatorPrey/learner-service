@@ -12,10 +12,15 @@ class ActorSenderController:
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")
 
     def _send(self, routing_key, actor_model):
-        # Publish the message to the topic exchange with the specified routing key
-        self.channel.basic_publish(
-            exchange="topic_exchange", routing_key=routing_key, body=actor_model
-        )
+
+        file_path = f"resources/{routing_key}.keras"
+        actor_model.save(file_path)
+
+        with open(file_path, 'rb') as actor_model_file:
+            # Publish the message to the topic exchange with the specified routing key
+            self.channel.basic_publish(
+                exchange="topic_exchange", routing_key=routing_key, body=actor_model_file
+            )
 
         print(f" [x] Sent '{actor_model}' with routing key '{routing_key}'")
 
