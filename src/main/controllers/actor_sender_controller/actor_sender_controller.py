@@ -1,4 +1,5 @@
 import pika
+import os
 
 
 class ActorSenderController:
@@ -7,19 +8,19 @@ class ActorSenderController:
             pika.ConnectionParameters(broker_host)
         )
         self.channel = self.connection.channel()
-
+        self.path = os.path.dirname(os.path.abspath(__file__))
         # Declare a topic exchange named 'topic_exchange'
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")
 
     def _send(self, routing_key, actor_model):
 
-        file_path = f"resources/{routing_key}.keras"
+        file_path = f"{self.path}/resources/{routing_key}.keras"
         actor_model.save(file_path)
 
         with open(file_path, 'rb') as actor_model_file:
             # Publish the message to the topic exchange with the specified routing key
             self.channel.basic_publish(
-                exchange="topic_exchange", routing_key=routing_key, body=actor_model_file
+                exchange="topic_exchange", routing_key=routing_key, body=actor_model_file.read()
             )
 
         print(f" [x] Sent '{actor_model}' with routing key '{routing_key}'")
