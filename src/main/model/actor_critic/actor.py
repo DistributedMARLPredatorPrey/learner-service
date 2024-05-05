@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+from tensorflow.keras import initializers
 from tensorflow.keras import layers
 
 
@@ -11,7 +11,7 @@ class Actor:
         The action is a tuple (acceleration, angular_acceleration).
         :param num_states: number of states
         """
-        last_init = tf.random_uniform_initializer(minval=-0.003, maxval=0.003)
+        last_init = initializers.RandomUniform(minval=-0.003, maxval=0.003)
         # the actor has separate towers for action and speed
         # in this way we can train them separately
         inputs = layers.Input(shape=(num_states,))

@@ -21,9 +21,8 @@ class ReplayBufferController:
         Sample a data batch of batch_size
         :return: (state_batch, action_batch, reward_batch, next_state_batch) tuple
         """
-        return self._convert_data_batch(
-            pd.DataFrame(self._request_data_batch().json()).to_dict()
-        )
+        df_data = pd.DataFrame(self._request_data_batch().json())
+        return None if df_data.empty else self._convert_data_batch(df_data.to_dict())
 
     def _request_data_batch(self) -> Response:
         """
@@ -42,15 +41,27 @@ class ReplayBufferController:
         :param data_dict:
         :return:
         """
-        return tuple(
-            [
-                tf.convert_to_tensor(v, dtype=tf.float32)
-                for v in [
-                    [
-                        ast.literal_eval(vv) if isinstance(vv, str) else vv
-                        for vv in list(data_dict[column].values())
-                    ]
-                    for column in ["State", "Action", "Reward", "Next state"]
-                ]
-            ]
-        )
+
+        # print("data dict")
+        # print(data_dict)
+
+        t = [tf.convert_to_tensor([ast.literal_eval(vv) if isinstance(vv, str) else vv
+                                   for vv in list(data_dict[c].values())], dtype=tf.float32)
+             for c in ["State", "Action", "Reward", "Next state"]]
+        # print([f"{len(tt)} {len(tt[0])}" for tt in t])
+        t = tuple(t)
+
+        # t = tuple(
+        #     [
+        #         tf.convert_to_tensor(v, dtype=tf.float32)
+        #         for v in [
+        #         [
+        #             ast.literal_eval(vv) if isinstance(vv, str) else vv
+        #             for vv in list(data_dict[column].values())
+        #         ]
+        #         for column in ["State", "Action", "Reward", "Next state"]
+        #     ]
+        #     ]
+        # )
+        # print(t)
+        return t

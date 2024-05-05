@@ -1,19 +1,30 @@
-import tensorflow as tf
+import subprocess
+from time import sleep, time
 
+import tensorflow as tf
+import numpy as np
+from src.main.controllers.actor_sender_controller.actor_sender_controller import (
+    ActorSenderController,
+)
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
 from src.main.model.actor_critic.actor import Actor
 from src.main.model.actor_critic.critic import Critic
 
+t_start = time()
+tf.compat.v1.enable_eager_execution()
+
 
 class Learner:
     def __init__(
-        self,
-        replay_buffer_controller: ReplayBufferController,
-        num_states: int,
-        num_actions: int,
-        num_agents: int,
+            self,
+            replay_buffer_controller: ReplayBufferController,
+            num_states: int,
+            num_actions: int,
+            num_agents: int,
+            save_path: str,
+            actor_sender_controller: ActorSenderController,
     ):
         """
         Initializes a Learner.
@@ -71,19 +82,27 @@ class Learner:
             self.target_actors[j].trainable = False
             self.actor_models[j].compile(loss="mse", optimizer=self.actor_optimizers[j])
 
+            self.actor_sender_controller = actor_sender_controller
+
         # Discount factor for future rewards
         self.gamma = 0.95
 
         # Used to update target networks
         self.tau = 0.005
 
+        self.save_path = save_path
+
+        # Send initial actors without training
+        self.actor_sender_controller.send_actors(self.actor_models)
+
     def update(self):
         """
         Updates the Actor-Critic network of each agent, following the MADDPG algorithm.
         :return:
         """
-        self._update_actors(self._update_critic())
+        self._update_actors(self._update_critics())
         self._update_targets()
+        self.actor_sender_controller.send_actors(self.actor_models)
 
     @tf.function
     def _update_targets(self):
@@ -99,45 +118,50 @@ class Learner:
             for a, b in zip(target_weights, weights):
                 a.assign(b * self.tau + a * (1 - self.tau))
 
-    def _update_critic(self):
+    def _update_critics(self):
         """
         Updates the Critic networks by reshaping the sampled data.
         :return:
         """
-        # Batch a sample from the buffer
-        (
-            state_batch,
-            action_batch,
-            reward_batch,
-            next_state_batch,
-        ) = self.replay_buffer_controller.sample_batch()
+
+        # Batch a sample from the buffer waiting one second between the requests
+        # if there isn't any yet recorded
+        print("Learner: sampling data from buffer")
+        data_as_tuple = self.replay_buffer_controller.sample_batch()
+        while data_as_tuple is None:
+            sleep(1)
+            print("Learner: sampling data from buffer")
+            data_as_tuple = self.replay_buffer_controller.sample_batch()
+
+        (state_batch, action_batch, reward_batch, next_state_batch) = data_as_tuple
+
         target_actions = []
         for j in range(self.num_agents):
             target_actions.append(
                 self.target_actors[j](
                     # get the next state of the j-agent
-                    next_state_batch[
-                        :, j * self.num_states : (j + 1) * self.num_states
-                    ],
+                    next_state_batch[:, j * self.num_states: (j + 1) * self.num_states],
                     training=True,
                 )
             )
         action_batch_reshape = []
         for j in range(self.num_agents):
             action_batch_reshape.append(
-                action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
+                action_batch[:, j * self.num_actions: (j + 1) * self.num_actions]
             )
-        return self._update_critic_networks(
+        ret, cs = self._update_critic_networks(
             state_batch,
             reward_batch,
             action_batch_reshape,
             next_state_batch,
             target_actions,
         )
+        self.save_file(cs)
+        return ret
 
     @tf.function
     def _update_critic_networks(
-        self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
+            self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
     ):
         """
         Computes the loss and updates parameters of the Critic networks.
@@ -149,8 +173,10 @@ class Learner:
         :param target_actions: target actions
         :return:
         """
+        cs = None
         for i in range(self.num_agents):
             # Train the Critic network
+
             with tf.GradientTape() as tape:
                 y = reward_batch[:, i] + self.gamma * self.target_critics[i](
                     [next_state_batch, target_actions], training=True
@@ -159,8 +185,6 @@ class Learner:
                     [state_batch, action_batch], training=True
                 )
                 critic_loss = tf.math.reduce_mean(tf.math.square(y - critic_value))
-                # tf.print(critic_loss)
-                tf.print(tf.reduce_sum(critic_loss))
 
             critic_grad = tape.gradient(
                 critic_loss, self.critic_models[i].trainable_variables
@@ -168,7 +192,26 @@ class Learner:
             self.critic_optimizers[i].apply_gradients(
                 zip(critic_grad, self.critic_models[i].trainable_variables)
             )
-        return state_batch
+
+            if i == 0:
+                cs = critic_loss
+
+        return state_batch, cs
+
+    def save_file(self, critic_loss):
+        # Serialize the tensor as a byte string
+        # serialized_tensor = tf.io.serialize_tensor(critic_loss)
+        #cs = tf.strings.as_string(critic_loss, precision=2)
+        # print("cs: ", cs)
+        # # Save the serialized tensor to a file
+        #tf.io.write_file(f"{self.save_path}.tfr", cs)
+        # #critic_loss.save(f"{self.save_path}.tfr")
+        # Execute the command and capture the output
+        #subprocess.run(f"cat {self.save_path}.tfr >> {self.save_path}.txt", shell=True,
+        #               capture_output=True, text=True)
+        # print(value)
+        with open(f"{self.save_path}.txt", "a") as f:
+            f.write(f"{critic_loss.numpy()}, {time() - t_start}\n")
 
     def _update_actors(self, state_batch):
         """
@@ -182,7 +225,7 @@ class Learner:
         for j in range(self.num_agents):
             actions.append(
                 self.actor_models[j](
-                    state_batch[:, j * self.num_states : (j + 1) * self.num_states],
+                    state_batch[:, j * self.num_states: (j + 1) * self.num_states],
                     training=True,
                 )
             )
@@ -200,7 +243,7 @@ class Learner:
         for i in range(self.num_agents):
             with tf.GradientTape(persistent=True) as tape:
                 action = self.actor_models[i](
-                    [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
+                    [state_batch[:, i * self.num_states: (i + 1) * self.num_states]],
                     training=True,
                 )
                 critic_value = self.critic_models[i](
