@@ -18,13 +18,13 @@ tf.compat.v1.enable_eager_execution()
 
 class Learner:
     def __init__(
-            self,
-            replay_buffer_controller: ReplayBufferController,
-            num_states: int,
-            num_actions: int,
-            num_agents: int,
-            save_path: str,
-            actor_sender_controller: ActorSenderController,
+        self,
+        replay_buffer_controller: ReplayBufferController,
+        num_states: int,
+        num_actions: int,
+        num_agents: int,
+        save_path: str,
+        actor_sender_controller: ActorSenderController,
     ):
         """
         Initializes a Learner.
@@ -140,14 +140,16 @@ class Learner:
             target_actions.append(
                 self.target_actors[j](
                     # get the next state of the j-agent
-                    next_state_batch[:, j * self.num_states: (j + 1) * self.num_states],
+                    next_state_batch[
+                        :, j * self.num_states : (j + 1) * self.num_states
+                    ],
                     training=True,
                 )
             )
         action_batch_reshape = []
         for j in range(self.num_agents):
             action_batch_reshape.append(
-                action_batch[:, j * self.num_actions: (j + 1) * self.num_actions]
+                action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
         ret, cs = self._update_critic_networks(
             state_batch,
@@ -161,7 +163,7 @@ class Learner:
 
     @tf.function
     def _update_critic_networks(
-            self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
+        self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
     ):
         """
         Computes the loss and updates parameters of the Critic networks.
@@ -201,13 +203,13 @@ class Learner:
     def save_file(self, critic_loss):
         # Serialize the tensor as a byte string
         # serialized_tensor = tf.io.serialize_tensor(critic_loss)
-        #cs = tf.strings.as_string(critic_loss, precision=2)
+        # cs = tf.strings.as_string(critic_loss, precision=2)
         # print("cs: ", cs)
         # # Save the serialized tensor to a file
-        #tf.io.write_file(f"{self.save_path}.tfr", cs)
+        # tf.io.write_file(f"{self.save_path}.tfr", cs)
         # #critic_loss.save(f"{self.save_path}.tfr")
         # Execute the command and capture the output
-        #subprocess.run(f"cat {self.save_path}.tfr >> {self.save_path}.txt", shell=True,
+        # subprocess.run(f"cat {self.save_path}.tfr >> {self.save_path}.txt", shell=True,
         #               capture_output=True, text=True)
         # print(value)
         with open(f"{self.save_path}.txt", "a") as f:
@@ -225,7 +227,7 @@ class Learner:
         for j in range(self.num_agents):
             actions.append(
                 self.actor_models[j](
-                    state_batch[:, j * self.num_states: (j + 1) * self.num_states],
+                    state_batch[:, j * self.num_states : (j + 1) * self.num_states],
                     training=True,
                 )
             )
@@ -243,7 +245,7 @@ class Learner:
         for i in range(self.num_agents):
             with tf.GradientTape(persistent=True) as tape:
                 action = self.actor_models[i](
-                    [state_batch[:, i * self.num_states: (i + 1) * self.num_states]],
+                    [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
                     training=True,
                 )
                 critic_value = self.critic_models[i](

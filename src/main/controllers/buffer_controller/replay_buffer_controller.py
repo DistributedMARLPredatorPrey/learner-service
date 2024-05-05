@@ -45,9 +45,16 @@ class ReplayBufferController:
         # print("data dict")
         # print(data_dict)
 
-        t = [tf.convert_to_tensor([ast.literal_eval(vv) if isinstance(vv, str) else vv
-                                   for vv in list(data_dict[c].values())], dtype=tf.float32)
-             for c in ["State", "Action", "Reward", "Next state"]]
+        t = [
+            tf.convert_to_tensor(
+                [
+                    ast.literal_eval(vv) if isinstance(vv, str) else vv
+                    for vv in list(data_dict[c].values())
+                ],
+                dtype=tf.float32,
+            )
+            for c in ["State", "Action", "Reward", "Next state"]
+        ]
         # print([f"{len(tt)} {len(tt[0])}" for tt in t])
         t = tuple(t)
 

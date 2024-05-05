@@ -6,6 +6,7 @@ class EnvironmentConfig:
     """
     Sum type modelling the environment configuration.
     """
+
     num_predators: int
     num_preys: int
     num_states: int
@@ -19,6 +20,7 @@ class ReplayBufferServiceConfig:
     """
     Sum type modelling the replay buffer configuration.
     """
+
     batch_size: int
     agent_type: str
     replay_buffer_host: str
@@ -30,4 +32,5 @@ class LearnerServiceConfig:
     """
     Sum type modelling the lerner service configuration.
     """
+
     pubsub_broker: str

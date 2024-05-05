@@ -1,4 +1,3 @@
-
 import keras
 import pika
 import os
@@ -19,12 +18,11 @@ class ActorSenderController:
         file_path = f"{self.path}/resources/{routing_key}.keras"
         actor_model.save(file_path)
 
-        with open(file_path, 'rb') as actor_model_file:
+        with open(file_path, "rb") as actor_model_file:
             actor_model_bytes = actor_model_file.read()
 
         self.channel.basic_publish(
-            exchange="topic_exchange", routing_key=routing_key,
-            body=actor_model_bytes
+            exchange="topic_exchange", routing_key=routing_key, body=actor_model_bytes
         )
 
     def send_actors(self, actor_models):
