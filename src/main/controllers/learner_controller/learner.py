@@ -13,8 +13,6 @@ from src.main.model.actor_critic.actor import Actor
 from src.main.model.actor_critic.critic import Critic
 
 t_start = time()
-tf.compat.v1.enable_eager_execution()
-
 
 class Learner:
     def __init__(
@@ -53,6 +51,7 @@ class Learner:
         self.critic_models, self.target_critics = [], []
         # creating target actor model
         self.actor_models, self.target_actors = [], []
+
         # Creating Optimizer for Actor and Critic networks
         self.critic_optimizers = []
         self.actor_optimizers = []
@@ -100,12 +99,12 @@ class Learner:
         Updates the Actor-Critic network of each agent, following the MADDPG algorithm.
         :return:
         """
-        self._update_actors(self._update_critics())
-        self._update_targets()
+        self.__update_actors(self.__update_critics())
+        self.__update_targets()
         self.actor_sender_controller.send_actors(self.actor_models)
 
     @tf.function
-    def _update_targets(self):
+    def __update_targets(self):
         """
         Slowly updates target parameters according to the tau rate <<1
         :return:
@@ -118,12 +117,11 @@ class Learner:
             for a, b in zip(target_weights, weights):
                 a.assign(b * self.tau + a * (1 - self.tau))
 
-    def _update_critics(self):
+    def __update_critics(self):
         """
         Updates the Critic networks by reshaping the sampled data.
         :return:
         """
-
         # Batch a sample from the buffer waiting one second between the requests
         # if there isn't any yet recorded
         print("Learner: sampling data from buffer")
@@ -151,18 +149,18 @@ class Learner:
             action_batch_reshape.append(
                 action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
-        ret, cs = self._update_critic_networks(
+        ret, cs = self.__update_critic_networks(
             state_batch,
             reward_batch,
             action_batch_reshape,
             next_state_batch,
             target_actions,
         )
-        self.save_file(cs)
+        self.__save_file(cs)
         return ret
 
     @tf.function
-    def _update_critic_networks(
+    def __update_critic_networks(
         self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
     ):
         """
@@ -200,22 +198,11 @@ class Learner:
 
         return state_batch, cs
 
-    def save_file(self, critic_loss):
-        # Serialize the tensor as a byte string
-        # serialized_tensor = tf.io.serialize_tensor(critic_loss)
-        # cs = tf.strings.as_string(critic_loss, precision=2)
-        # print("cs: ", cs)
-        # # Save the serialized tensor to a file
-        # tf.io.write_file(f"{self.save_path}.tfr", cs)
-        # #critic_loss.save(f"{self.save_path}.tfr")
-        # Execute the command and capture the output
-        # subprocess.run(f"cat {self.save_path}.tfr >> {self.save_path}.txt", shell=True,
-        #               capture_output=True, text=True)
-        # print(value)
+    def __save_file(self, critic_loss):
         with open(f"{self.save_path}.txt", "a") as f:
             f.write(f"{critic_loss.numpy()}, {time() - t_start}\n")
 
-    def _update_actors(self, state_batch):
+    def __update_actors(self, state_batch):
         """
         Updates the Actor networks by:
         - Computing the loss from the Q-value of each agent Critic
@@ -231,10 +218,10 @@ class Learner:
                     training=True,
                 )
             )
-        self._update_actor_networks(state_batch, actions)
+        self.__update_actor_networks(state_batch, actions)
 
     @tf.function
-    def _update_actor_networks(self, state_batch, actions):
+    def __update_actor_networks(self, state_batch, actions):
         """
         Computes the loss and updates parameters of the Actor networks.
         Makes use of tensorflow graphs to speed up the computation.
