@@ -1,3 +1,5 @@
+import time
+
 from src.main.controllers.actor_sender_controller.actor_sender_controller import (
     ActorSenderController,
 )
@@ -30,10 +32,14 @@ if __name__ == "__main__":
         ),
         num_states=env_config.num_states,
         num_actions=env_config.num_actions,
+        save_path= replay_buffer_service_config.agent_type,
         actor_sender_controller=ActorSenderController(
-            config_utils.learner_service_configuration().pubsub_broker
+            config_utils.learner_service_configuration().pubsub_broker,
+            "predator-actor-model" if replay_buffer_service_config.agent_type == "predator"
+            else "prey-actor-model"
         ),
     )
     # Train the models until the process is being stopped
     while True:
         learner.update()
+        time.sleep(1)
