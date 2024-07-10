@@ -16,15 +16,15 @@ t_start = time()
 
 class Learner:
     def __init__(
-            self,
-            replay_buffer_controller: ReplayBufferController,
-            agent_type: str,
-            num_predators: int,
-            num_preys: int,
-            num_states: int,
-            num_actions: int,
-            save_path: str,
-            actor_sender_controller: ActorSenderController,
+        self,
+        replay_buffer_controller: ReplayBufferController,
+        agent_type: str,
+        num_predators: int,
+        num_preys: int,
+        num_states: int,
+        num_actions: int,
+        save_path: str,
+        actor_sender_controller: ActorSenderController,
     ):
         """
         Initializes a Learner.
@@ -58,21 +58,22 @@ class Learner:
         self.actor_optimizer = tf.keras.optimizers.Adam(self.actor_lr)
 
         # Creating critic models
-        self.critic_model, self.target_critic = (Critic(num_states, num_actions, self.num_agents).model,
-                                                 Critic(num_states, num_actions, self.num_agents).model)
+        self.critic_model, self.target_critic = (
+            Critic(num_states, num_actions, self.num_agents).model,
+            Critic(num_states, num_actions, self.num_agents).model,
+        )
         self.target_critic.set_weights(self.critic_model.get_weights())
         self.target_critic.trainable = False
-        self.critic_model.compile(
-            loss="mse", optimizer=self.critic_optimizer
-        )
+        self.critic_model.compile(loss="mse", optimizer=self.critic_optimizer)
 
         # Creating target actor model
-        self.actor_model, self.target_actor = Actor(num_states).model, Actor(num_states).model
+        self.actor_model, self.target_actor = (
+            Actor(num_states).model,
+            Actor(num_states).model,
+        )
         self.target_actor.set_weights(self.actor_model.get_weights())
         self.target_actor.trainable = False
-        self.actor_model.compile(
-            loss="mse", optimizer=self.actor_optimizer
-        )
+        self.actor_model.compile(loss="mse", optimizer=self.actor_optimizer)
         self.actor_sender_controller = actor_sender_controller
         # Discount factor for future rewards
         self.gamma = 0.95
@@ -125,7 +126,7 @@ class Learner:
                 self.target_actor(
                     # get the next state of the j-agent
                     next_state_batch[
-                    :, j * self.num_states: (j + 1) * self.num_states
+                        :, j * self.num_states : (j + 1) * self.num_states
                     ],
                     training=True,
                 )
@@ -133,7 +134,7 @@ class Learner:
         action_batch_reshape = []
         for j in range(self.num_agents):
             action_batch_reshape.append(
-                action_batch[:, j * self.num_actions: (j + 1) * self.num_actions]
+                action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
         ret = self.__update_critic_networks(
             state_batch,
@@ -146,7 +147,7 @@ class Learner:
 
     @tf.function
     def __update_critic_networks(
-            self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
+        self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
     ):
         """
         Computes the loss and updates parameters of the Critic networks.
@@ -194,7 +195,7 @@ class Learner:
         for j in range(self.num_agents):
             actions.append(
                 self.actor_model(
-                    state_batch[:, j * self.num_states: (j + 1) * self.num_states],
+                    state_batch[:, j * self.num_states : (j + 1) * self.num_states],
                     training=True,
                 )
             )
@@ -212,7 +213,7 @@ class Learner:
         for i in self.local_agents_idxs:
             with tf.GradientTape(persistent=True) as tape:
                 action = self.actor_model(
-                    [state_batch[:, i * self.num_states: (i + 1) * self.num_states]],
+                    [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
                     training=True,
                 )
                 critic_value = self.critic_model(
@@ -227,9 +228,7 @@ class Learner:
                 )
                 actor_loss = -tf.math.reduce_mean(critic_value)
 
-            actor_grad = tape.gradient(
-                actor_loss, self.actor_model.trainable_variables
-            )
+            actor_grad = tape.gradient(actor_loss, self.actor_model.trainable_variables)
             self.actor_optimizer.apply_gradients(
                 zip(actor_grad, self.actor_model.trainable_variables)
             )

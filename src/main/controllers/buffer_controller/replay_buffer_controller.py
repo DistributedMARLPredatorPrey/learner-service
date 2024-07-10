@@ -31,7 +31,7 @@ class ReplayBufferController:
         """
         return requests.get(
             f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/batch_data/predator/{self.batch_size}"
-            #f"batch_data/{self.agent_type}/{self.batch_size}"
+            # f"batch_data/{self.agent_type}/{self.batch_size}"
         )
 
     @staticmethod
@@ -41,13 +41,15 @@ class ReplayBufferController:
         :param data_dict:
         :return:
         """
-        return tuple([
-            tf.convert_to_tensor(
-                [
-                    ast.literal_eval(vv) if isinstance(vv, str) else vv
-                    for vv in list(data_dict[c].values())
-                ],
-                dtype=tf.float32,
-            )
-            for c in ["State", "Action", "Reward", "Next state"]
-        ])
+        return tuple(
+            [
+                tf.convert_to_tensor(
+                    [
+                        ast.literal_eval(vv) if isinstance(vv, str) else vv
+                        for vv in list(data_dict[c].values())
+                    ],
+                    dtype=tf.float32,
+                )
+                for c in ["State", "Action", "Reward", "Next state"]
+            ]
+        )
