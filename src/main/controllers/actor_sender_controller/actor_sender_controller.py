@@ -14,18 +14,15 @@ class ActorSenderController:
         # Declare a topic exchange named 'topic_exchange'
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")
 
-    def _send(self, routing_key, actor_model: keras.Model):
+    def __send(self, routing_key, actor_model: keras.Model):
         file_path = f"{self.path}/resources/{routing_key}.keras"
         actor_model.save(file_path)
-
         with open(file_path, "rb") as actor_model_file:
             actor_model_bytes = actor_model_file.read()
-
         self.channel.basic_publish(
             exchange="topic_exchange", routing_key=routing_key, body=actor_model_bytes
         )
 
     def send_actors(self, actor_models):
-        print("Updating actor policies")
         for i in range(1):
-            self._send(self.routing_key, actor_models[i])
+            self.__send(self.routing_key, actor_models[i])
