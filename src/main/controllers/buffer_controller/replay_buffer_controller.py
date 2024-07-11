@@ -6,7 +6,7 @@ import pandas as pd
 import tensorflow as tf
 from requests import Response
 
-from src.main.controllers.config_utils.config import ReplayBufferServiceConfig
+from src.main.model.config.config import ReplayBufferServiceConfig
 
 
 class ReplayBufferController:
