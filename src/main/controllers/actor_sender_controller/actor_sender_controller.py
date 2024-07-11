@@ -11,7 +11,6 @@ class ActorSenderController:
         self.channel = self.connection.channel()
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.routing_key = routing_key
-        # Declare a topic exchange named 'topic_exchange'
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")
 
     def __send(self, routing_key, actor_model: keras.Model):
@@ -24,5 +23,10 @@ class ActorSenderController:
         )
 
     def send_actors(self, actor_models):
+        """
+        Send actors models to Predator Prey service
+        :param actor_models: models
+        :return:
+        """
         for i in range(1):
             self.__send(self.routing_key, actor_models[i])
