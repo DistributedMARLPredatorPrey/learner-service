@@ -9,11 +9,11 @@ from src.main.controllers.buffer_controller.replay_buffer_controller import (
 )
 
 from src.main.controllers.learner_controller.learner import Learner
-from src.main.model.config import (
+from src.main.model.config.config import (
     EnvironmentConfig,
     ReplayBufferServiceConfig,
 )
-from src.main.model.config import ConfigUtils
+from src.main.model.config.config_utils import ConfigUtils
 
 logging.getLogger().setLevel(logging.INFO)
 
