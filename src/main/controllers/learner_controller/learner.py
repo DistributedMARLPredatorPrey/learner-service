@@ -136,14 +136,13 @@ class Learner:
             action_batch_reshape.append(
                 action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
-        ret = self.__update_critic_networks(
+        return self.__update_critic_networks(
             state_batch,
             reward_batch,
             action_batch_reshape,
             next_state_batch,
             target_actions,
         )
-        return ret
 
     @tf.function
     def __update_critic_networks(

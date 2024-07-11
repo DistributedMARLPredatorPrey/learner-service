@@ -15,6 +15,8 @@ from src.main.controllers.config_utils.config import (
 )
 from src.main.controllers.config_utils.config_utils import ConfigUtils
 
+logging.getLogger().setLevel(logging.INFO)
+
 if __name__ == "__main__":
     # Create configuration
     config_utils: ConfigUtils = ConfigUtils()
@@ -24,7 +26,7 @@ if __name__ == "__main__":
     )
 
     # Create the learner, passing to it a replay buffer controller
-    logging.info("Starting Learner...")
+    logging.info("Starting Learner Service...")
     learner = Learner(
         replay_buffer_controller=ReplayBufferController(replay_buffer_service_config),
         agent_type=replay_buffer_service_config.agent_type,
