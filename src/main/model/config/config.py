@@ -9,10 +9,10 @@ class EnvironmentConfig:
 
     num_predators: int
     num_preys: int
-    acc_lower_bound: float
-    acc_upper_bound: float
     num_states: int
     num_actions: int
+    acc_lower_bound: float
+    acc_upper_bound: float
 
 
 @dataclass(frozen=True)
@@ -25,3 +25,12 @@ class ReplayBufferServiceConfig:
     agent_type: str
     replay_buffer_host: str
     replay_buffer_port: int
+
+
+@dataclass
+class LearnerServiceConfig:
+    """
+    Sum type modelling the lerner service configuration.
+    """
+
+    pubsub_broker: str
