@@ -3,6 +3,7 @@ name: Replay Buffer Service Release
 on:
   push:
     branches:
+      - main
       - release/*
 
 permissions:
