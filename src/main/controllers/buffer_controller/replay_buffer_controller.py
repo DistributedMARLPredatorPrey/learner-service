@@ -1,4 +1,5 @@
 import ast
+import logging
 from typing import Dict, Tuple
 
 import requests
@@ -30,8 +31,8 @@ class ReplayBufferController:
         :return: Response from the remote server
         """
         return requests.get(
-            f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/batch_data/predator/{self.batch_size}"
-            # f"batch_data/{self.agent_type}/{self.batch_size}"
+            f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/"
+            f"batch_data/{self.agent_type}/{self.batch_size}"
         )
 
     @staticmethod
@@ -41,6 +42,7 @@ class ReplayBufferController:
         :param data_dict:
         :return:
         """
+        #logging.info(f"DATA DICT {data_dict}")
         return tuple(
             [
                 tf.convert_to_tensor(

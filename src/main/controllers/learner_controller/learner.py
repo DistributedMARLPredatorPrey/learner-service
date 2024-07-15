@@ -42,11 +42,10 @@ class Learner:
         # self.par_services = par_services
         self.num_states = num_states
         self.num_actions = num_actions
-        self.num_agents = num_predators + num_preys
+        self.num_agents = num_predators if agent_type == "predator" else num_preys
 
         start_idx = 0 if agent_type == "predator" else num_predators
         end_idx = num_predators if agent_type == "predator" else self.num_agents
-        self.local_agents_idxs = range(start_idx, end_idx)
 
         # Learning rate for actor-critic models
         self.critic_lr = 1e-4
@@ -79,8 +78,8 @@ class Learner:
         # Used to update target networks
         self.tau = 0.005
         self.save_path = save_path
-        # Send initial actors without training
-        self.actor_sender_controller.send_actors([self.actor_model])
+        # Send initial actor without training
+        self.actor_sender_controller.send_actor(self.actor_model)
 
     def update(self):
         """
@@ -89,7 +88,7 @@ class Learner:
         """
         self.__update_actors(self.__update_critics())
         self.__update_targets()
-        self.actor_sender_controller.send_actors([self.actor_model])
+        self.actor_sender_controller.send_actor(self.actor_model)
 
     @tf.function
     def __update_targets(self):
@@ -157,7 +156,7 @@ class Learner:
         :param target_actions: target actions
         :return:
         """
-        for i in self.local_agents_idxs:
+        for i in range(self.num_agents):
             # Train the Critic network
 
             with tf.GradientTape() as tape:
@@ -208,7 +207,7 @@ class Learner:
         :param actions: joint actions
         :return:
         """
-        for i in self.local_agents_idxs:
+        for i in range(self.num_agents):
             with tf.GradientTape(persistent=True) as tape:
                 action = self.actor_model(
                     [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
