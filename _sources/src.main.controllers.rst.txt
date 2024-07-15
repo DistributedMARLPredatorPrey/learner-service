@@ -7,8 +7,8 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   src.main.controllers.actor_sender_controller
    src.main.controllers.buffer_controller
-   src.main.controllers.config_utils
    src.main.controllers.learner_controller
 
 Module contents
