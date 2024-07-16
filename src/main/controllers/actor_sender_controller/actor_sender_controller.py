@@ -22,11 +22,10 @@ class ActorSenderController:
             exchange="topic_exchange", routing_key=routing_key, body=actor_model_bytes
         )
 
-    def send_actors(self, actor_models):
+    def send_actors(self, actor_model):
         """
-        Send actors models to Predator Prey service
-        :param actor_models: models
+        Send actor model to Predator Prey service
+        :param actor_model: model
         :return:
         """
-        for i in range(1):
-            self.__send(self.routing_key, actor_models[i])
+        self.__send(self.routing_key, actor_model)
