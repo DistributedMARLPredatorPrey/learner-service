@@ -37,41 +37,49 @@ class Learner:
         :param num_actions: number of actions allowed
         :param num_agents: number of agents of the same type
         """
-        # Parameters
         self.replay_buffer_controller = replay_buffer_controller
-        # self.par_services = par_services
         self.num_states = num_states
         self.num_actions = num_actions
-        self.num_agents = num_predators if agent_type == "predator" else num_preys
-
-        start_idx = 0 if agent_type == "predator" else num_predators
-        end_idx = num_predators if agent_type == "predator" else self.num_agents
+        self.num_agents = num_predators + num_preys
 
         # Learning rate for actor-critic models
         self.critic_lr = 1e-4
         self.actor_lr = 5e-5
 
-        # Creating Optimizer for Actor and Critic networks
-        self.critic_optimizer = tf.keras.optimizers.Adam(self.critic_lr)
-        self.actor_optimizer = tf.keras.optimizers.Adam(self.actor_lr)
+        self.num_predators = num_predators
+        self.num_preys = num_preys
 
         # Creating critic models
-        self.critic_model, self.target_critic = (
-            Critic(num_states, num_actions, self.num_agents).model,
-            Critic(num_states, num_actions, self.num_agents).model,
-        )
-        self.target_critic.set_weights(self.critic_model.get_weights())
-        self.target_critic.trainable = False
-        self.critic_model.compile(loss="mse", optimizer=self.critic_optimizer)
+        self.critic_models, self.target_critics = [], []
+        self.critic_optimizers = []
+        for i in range(2):
+            critic_model, target_critic = (
+                Critic(num_states, num_actions, self.num_agents).model,
+                Critic(num_states, num_actions, self.num_agents).model,
+            )
+
+            target_critic.set_weights(critic_model.get_weights())
+            target_critic.trainable = False
+            critic_opt = tf.keras.optimizers.Adam(self.critic_lr)
+            critic_model.compile(loss="mse", optimizer=critic_opt)
+            self.critic_models.append(critic_model)
+            self.target_critics.append(target_critic)
+            self.critic_optimizers.append(critic_opt)
 
         # Creating target actor model
-        self.actor_model, self.target_actor = (
-            Actor(num_states).model,
-            Actor(num_states).model,
-        )
-        self.target_actor.set_weights(self.actor_model.get_weights())
-        self.target_actor.trainable = False
-        self.actor_model.compile(loss="mse", optimizer=self.actor_optimizer)
+        self.actor_models, self.target_actors = [], []
+        self.actor_optimizers = []
+        for i in range(2):
+            actor_model, target_actor = Actor(num_states).model, Actor(num_states).model
+
+            target_actor.set_weights(actor_model.get_weights())
+            target_actor.trainable = False
+            actor_opt = tf.keras.optimizers.Adam(self.actor_lr)
+            actor_model.compile(loss="mse", optimizer=actor_opt)
+            self.actor_models.append(actor_model)
+            self.target_actors.append(target_actor)
+            self.actor_optimizers.append(actor_opt)
+
         self.actor_sender_controller = actor_sender_controller
         # Discount factor for future rewards
         self.gamma = 0.95
@@ -79,7 +87,9 @@ class Learner:
         self.tau = 0.005
         self.save_path = save_path
         # Send initial actor without training
-        self.actor_sender_controller.send_actor(self.actor_model)
+        self.actor_sender_controller.send_actors(
+            (self.actor_models[0], self.actor_models[1])
+        )
 
     def update(self):
         """
@@ -88,40 +98,56 @@ class Learner:
         """
         self.__update_actors(self.__update_critics())
         self.__update_targets()
-        self.actor_sender_controller.send_actor(self.actor_model)
+        self.actor_sender_controller.send_actors(
+            (self.actor_models[0], self.actor_models[1])
+        )
 
-    @tf.function
     def __update_targets(self):
         """
         Slowly updates target parameters according to the tau rate <<1
         :return:
         """
-        target_weights, weights = (
-            self.target_actor.variables,
-            self.actor_model.variables,
-        )
-        for a, b in zip(target_weights, weights):
-            a.assign(b * self.tau + a * (1 - self.tau))
+        # for i in range(2):
+        #     target_weights, weights = (
+        #         self.target_actors[i].variables,
+        #         self.actor_models[i].variables,
+        #     )
+        #     for a, b in zip(target_weights, weights):
+        #         a.assign(b * self.tau + a * (1 - self.tau))
+        for i in range(2):
+            self.__update_target(self.target_actors[i], self.actor_models[i], self.tau)
+            self.__update_target(
+                self.target_critics[i], self.critic_models[i], self.tau
+            )
+
+    def __update_target(self, target, original, tau):
+        target_weights = target.get_weights()
+        original_weights = original.get_weights()
+        for i in range(len(target_weights)):
+            target_weights[i] = original_weights[i] * tau + target_weights[i] * (
+                1 - tau
+            )
+        target.set_weights(target_weights)
 
     def __update_critics(self):
         """
         Updates the Critic networks by reshaping the sampled data.
         :return:
         """
+        batch_timeout = 1
         # Batch a sample from the buffer waiting one second between the requests
         # if there isn't any yet recorded
-        logging.info("Sampling data from buffer")
         data_as_tuple = self.replay_buffer_controller.sample_batch()
         while data_as_tuple is None:
-            sleep(1)
-            logging.info("Sampling data from buffer")
+            sleep(batch_timeout)
             data_as_tuple = self.replay_buffer_controller.sample_batch()
 
         (state_batch, action_batch, reward_batch, next_state_batch) = data_as_tuple
         target_actions = []
+
         for j in range(self.num_agents):
             target_actions.append(
-                self.target_actor(
+                self.target_actors[j > self.num_predators](
                     # get the next state of the j-agent
                     next_state_batch[
                         :, j * self.num_states : (j + 1) * self.num_states
@@ -134,6 +160,7 @@ class Learner:
             action_batch_reshape.append(
                 action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
+
         return self.__update_critic_networks(
             state_batch,
             reward_batch,
@@ -158,25 +185,26 @@ class Learner:
         """
         for i in range(self.num_agents):
             # Train the Critic network
-
+            model_i = i > self.num_predators - 1
             with tf.GradientTape() as tape:
                 # Compute y = r_i + gamma * Q_i'(x',a_1',a_2', ...,a_n')
-                y = reward_batch[:, i] + self.gamma * self.target_critic(
+                y = reward_batch[:, i] + self.gamma * self.target_critics[model_i](
                     [next_state_batch, target_actions], training=True
                 )
                 # Eval Q_i(x, a_1, a_2, ..., a_n)
-                critic_value = self.critic_model(
+                critic_value = self.critic_models[model_i](
                     [state_batch, action_batch], training=True
                 )
                 # Compute loss = square_mean(y - Q_i(x, a_1, a_2, ..., a_n))
                 # Here square_mean is taken over the batch
                 critic_loss = tf.math.reduce_mean(tf.math.square(y - critic_value))
+                tf.print("LOSS", critic_loss)
 
             critic_grad = tape.gradient(
-                critic_loss, self.critic_model.trainable_variables
+                critic_loss, self.critic_models[model_i].trainable_variables
             )
-            self.critic_optimizer.apply_gradients(
-                zip(critic_grad, self.critic_model.trainable_variables)
+            self.critic_optimizers[model_i].apply_gradients(
+                zip(critic_grad, self.critic_models[model_i].trainable_variables)
             )
         return state_batch
 
@@ -189,10 +217,10 @@ class Learner:
         :return:
         """
         actions = []
-        for j in range(self.num_agents):
+        for i in range(self.num_agents):
             actions.append(
-                self.actor_model(
-                    state_batch[:, j * self.num_states : (j + 1) * self.num_states],
+                self.actor_models[i > self.num_predators - 1](
+                    state_batch[:, i * self.num_states : (i + 1) * self.num_states],
                     training=True,
                 )
             )
@@ -208,12 +236,14 @@ class Learner:
         :return:
         """
         for i in range(self.num_agents):
+            model_i = i > self.num_predators - 1
+
             with tf.GradientTape(persistent=True) as tape:
-                action = self.actor_model(
+                action = self.actor_models[model_i](
                     [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
                     training=True,
                 )
-                critic_value = self.critic_model(
+                critic_value = self.critic_models[model_i](
                     [
                         state_batch,
                         [
@@ -225,7 +255,9 @@ class Learner:
                 )
                 actor_loss = -tf.math.reduce_mean(critic_value)
 
-            actor_grad = tape.gradient(actor_loss, self.actor_model.trainable_variables)
-            self.actor_optimizer.apply_gradients(
-                zip(actor_grad, self.actor_model.trainable_variables)
+            actor_grad = tape.gradient(
+                actor_loss, self.actor_models[model_i].trainable_variables
+            )
+            self.actor_optimizers[model_i].apply_gradients(
+                zip(actor_grad, self.actor_models[model_i].trainable_variables)
             )

@@ -32,7 +32,7 @@ class ReplayBufferController:
         """
         return requests.get(
             f"http://{self.replay_buffer_host}:{self.replay_buffer_port}/"
-            f"batch_data/{self.agent_type}/{self.batch_size}"
+            f"batch_data/{self.batch_size}"
         )
 
     @staticmethod

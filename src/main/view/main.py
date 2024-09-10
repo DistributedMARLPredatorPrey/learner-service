@@ -37,9 +37,7 @@ if __name__ == "__main__":
         save_path=replay_buffer_service_config.agent_type,
         actor_sender_controller=ActorSenderController(
             config_utils.learner_service_configuration().pubsub_broker,
-            "predator-actor-model"
-            if replay_buffer_service_config.agent_type == "predator"
-            else "prey-actor-model",
+            ("predator-actor-model", "prey-actor-model"),
         ),
     )
     # Train the models until the process is being stopped
