@@ -55,4 +55,3 @@ class ReplayBufferController:
                 for c in ["State", "Action", "Reward", "Next state"]
             ]
         )
-        

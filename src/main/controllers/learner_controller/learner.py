@@ -53,8 +53,10 @@ class Learner:
         self.critic_models, self.target_critics = [], []
         self.critic_optimizers = []
         for i in range(2):
-            critic_model, target_critic = (Critic(num_states, num_actions, self.num_agents).model,
-                                           Critic(num_states, num_actions, self.num_agents).model)
+            critic_model, target_critic = (
+                Critic(num_states, num_actions, self.num_agents).model,
+                Critic(num_states, num_actions, self.num_agents).model,
+            )
 
             target_critic.set_weights(critic_model.get_weights())
             target_critic.trainable = False
@@ -78,7 +80,6 @@ class Learner:
             self.target_actors.append(target_actor)
             self.actor_optimizers.append(actor_opt)
 
-
         self.actor_sender_controller = actor_sender_controller
         # Discount factor for future rewards
         self.gamma = 0.95
@@ -86,7 +87,9 @@ class Learner:
         self.tau = 0.005
         self.save_path = save_path
         # Send initial actor without training
-        self.actor_sender_controller.send_actors((self.actor_models[0], self.actor_models[1]))
+        self.actor_sender_controller.send_actors(
+            (self.actor_models[0], self.actor_models[1])
+        )
 
     def update(self):
         """
@@ -95,7 +98,9 @@ class Learner:
         """
         self.__update_actors(self.__update_critics())
         self.__update_targets()
-        self.actor_sender_controller.send_actors((self.actor_models[0], self.actor_models[1]))
+        self.actor_sender_controller.send_actors(
+            (self.actor_models[0], self.actor_models[1])
+        )
 
     def __update_targets(self):
         """
@@ -111,16 +116,18 @@ class Learner:
         #         a.assign(b * self.tau + a * (1 - self.tau))
         for i in range(2):
             self.__update_target(self.target_actors[i], self.actor_models[i], self.tau)
-            self.__update_target(self.target_critics[i], self.critic_models[i], self.tau)
-
+            self.__update_target(
+                self.target_critics[i], self.critic_models[i], self.tau
+            )
 
     def __update_target(self, target, original, tau):
         target_weights = target.get_weights()
         original_weights = original.get_weights()
         for i in range(len(target_weights)):
-            target_weights[i] = original_weights[i] * tau + target_weights[i] * (1 - tau)
+            target_weights[i] = original_weights[i] * tau + target_weights[i] * (
+                1 - tau
+            )
         target.set_weights(target_weights)
-
 
     def __update_critics(self):
         """
@@ -228,7 +235,7 @@ class Learner:
         :param actions: joint actions
         :return:
         """
-        for i in range(self.num_agents): 
+        for i in range(self.num_agents):
             model_i = i > self.num_predators - 1
 
             with tf.GradientTape(persistent=True) as tape:
@@ -248,7 +255,9 @@ class Learner:
                 )
                 actor_loss = -tf.math.reduce_mean(critic_value)
 
-            actor_grad = tape.gradient(actor_loss, self.actor_models[model_i].trainable_variables)
+            actor_grad = tape.gradient(
+                actor_loss, self.actor_models[model_i].trainable_variables
+            )
             self.actor_optimizers[model_i].apply_gradients(
                 zip(actor_grad, self.actor_models[model_i].trainable_variables)
             )
