@@ -15,15 +15,15 @@ from src.main.model.actor_critic.critic import Critic
 
 class Learner:
     def __init__(
-            self,
-            replay_buffer_controller: ReplayBufferController,
-            agent_type: str,
-            num_predators: int,
-            num_preys: int,
-            num_states: int,
-            num_actions: int,
-            save_path: str,
-            actor_sender_controller: ActorSenderController,
+        self,
+        replay_buffer_controller: ReplayBufferController,
+        agent_type: str,
+        num_predators: int,
+        num_preys: int,
+        num_states: int,
+        num_actions: int,
+        save_path: str,
+        actor_sender_controller: ActorSenderController,
     ):
         """
         Initializes a Learner.
@@ -119,7 +119,7 @@ class Learner:
         original_weights = original.get_weights()
         for i in range(len(target_weights)):
             target_weights[i] = original_weights[i] * tau + target_weights[i] * (
-                    1 - tau
+                1 - tau
             )
         target.set_weights(target_weights)
 
@@ -144,7 +144,7 @@ class Learner:
                 self.target_actors[j > self.num_predators](
                     # get the next state of the j-agent
                     next_state_batch[
-                    :, j * self.num_states: (j + 1) * self.num_states
+                        :, j * self.num_states : (j + 1) * self.num_states
                     ],
                     training=True,
                 )
@@ -152,7 +152,7 @@ class Learner:
         action_batch_reshape = []
         for j in range(self.num_agents):
             action_batch_reshape.append(
-                action_batch[:, j * self.num_actions: (j + 1) * self.num_actions]
+                action_batch[:, j * self.num_actions : (j + 1) * self.num_actions]
             )
 
         state_batch, losses = self.__update_critic_networks(
@@ -175,7 +175,7 @@ class Learner:
 
     @tf.function
     def __update_critic_networks(
-            self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
+        self, state_batch, reward_batch, action_batch, next_state_batch, target_actions
     ):
         """
         Computes the loss and updates parameters of the Critic networks.
@@ -188,7 +188,8 @@ class Learner:
         :return:
         """
         map_arr = lambda arr, i, l: tf.concat(
-            [arr[:, i * l: (i + 1) * l], arr[:, :i * l], arr[:, (i + 1) * l:]], axis=1
+            [arr[:, i * l : (i + 1) * l], arr[:, : i * l], arr[:, (i + 1) * l :]],
+            axis=1,
         )
         stack = lambda arr: tf.stack(arr)
         unstack = lambda arr: tf.unstack(arr)
@@ -200,14 +201,19 @@ class Learner:
             with tf.GradientTape() as tape:
                 # Compute y = r_i + gamma * Q_i'(x',a_1',a_2', ...,a_n')
                 y = reward_batch[:, i] + self.gamma * self.target_critics[model_i](
-                    [map_arr(next_state_batch, i, self.num_states),
-                     unstack(map_arr(stack(target_actions), i, self.num_actions))],
-                    training=True
+                    [
+                        map_arr(next_state_batch, i, self.num_states),
+                        unstack(map_arr(stack(target_actions), i, self.num_actions)),
+                    ],
+                    training=True,
                 )
                 # Eval Q_i(x, a_1, a_2, ..., a_n)
                 critic_value = self.critic_models[model_i](
-                    [map_arr(state_batch, i, self.num_states),
-                     unstack(map_arr(stack(action_batch), i, self.num_actions))], training=True
+                    [
+                        map_arr(state_batch, i, self.num_states),
+                        unstack(map_arr(stack(action_batch), i, self.num_actions)),
+                    ],
+                    training=True,
                 )
                 # Compute loss = square_mean(y - Q_i(x, a_1, a_2, ..., a_n))
                 # Here square_mean is taken over the batch
@@ -235,7 +241,7 @@ class Learner:
         for i in range(self.num_agents):
             actions.append(
                 self.actor_models[i > self.num_predators - 1](
-                    state_batch[:, i * self.num_states: (i + 1) * self.num_states],
+                    state_batch[:, i * self.num_states : (i + 1) * self.num_states],
                     training=True,
                 )
             )
@@ -251,7 +257,8 @@ class Learner:
         :return:
         """
         map_arr = lambda arr, i, l: tf.concat(
-            [arr[:, i * l: (i + 1) * l], arr[:, :i * l], arr[:, (i + 1) * l:]], axis=1
+            [arr[:, i * l : (i + 1) * l], arr[:, : i * l], arr[:, (i + 1) * l :]],
+            axis=1,
         )
         stack = lambda arr: tf.stack(arr)
         unstack = lambda arr: tf.unstack(arr)
@@ -261,18 +268,24 @@ class Learner:
 
             with tf.GradientTape(persistent=True) as tape:
                 action = self.actor_models[model_i](
-                    [state_batch[:, i * self.num_states: (i + 1) * self.num_states]],
+                    [state_batch[:, i * self.num_states : (i + 1) * self.num_states]],
                     training=True,
                 )
                 critic_value = self.critic_models[model_i](
                     [
                         map_arr(state_batch, i, self.num_states),
-                        unstack(map_arr(stack(
-                            [
-                            actions[k] if k != i else action
-                            for k in range(self.num_agents)
-                            ]
-                        ), i, self.num_actions))
+                        unstack(
+                            map_arr(
+                                stack(
+                                    [
+                                        actions[k] if k != i else action
+                                        for k in range(self.num_agents)
+                                    ]
+                                ),
+                                i,
+                                self.num_actions,
+                            )
+                        ),
                     ],
                     training=True,
                 )
