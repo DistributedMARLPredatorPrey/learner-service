@@ -13,7 +13,7 @@ class ActorSenderController:
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.routing_keys = routing_keys
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(self.broker_host)
+            pika.ConnectionParameters(host=self.broker_host, heartbeat=600)
         )
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")

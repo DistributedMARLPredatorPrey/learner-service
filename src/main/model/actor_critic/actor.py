@@ -14,15 +14,15 @@ class Actor:
         # the actor has separate towers for action and speed
         # in this way we can train them separately
         inputs = layers.Input(shape=(num_states,))
-        acc_out = layers.Dense(128, activation="relu")(inputs)
-        acc_out = layers.Dense(64, activation="relu")(acc_out)
+        acc_out = layers.Dense(256, activation="relu")(inputs)
+        acc_out = layers.Dense(256, activation="relu")(acc_out)
         # acceleration
         acc_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
             acc_out
         )
 
-        ang_acc_out = layers.Dense(128, activation="relu")(inputs)
-        ang_acc_out = layers.Dense(64, activation="relu")(ang_acc_out)
+        ang_acc_out = layers.Dense(256, activation="relu")(inputs)
+        ang_acc_out = layers.Dense(256, activation="relu")(ang_acc_out)
         # angular acceleration
         ang_acc_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
             ang_acc_out

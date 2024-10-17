@@ -24,7 +24,6 @@ if __name__ == "__main__":
     replay_buffer_service_config: ReplayBufferServiceConfig = (
         config_utils.replay_buffer_configuration()
     )
-
     # Create the learner, passing to it a replay buffer controller
     logging.info("Starting Learner Service...")
     learner = Learner(
@@ -41,7 +40,7 @@ if __name__ == "__main__":
         ),
     )
     # Train the models until the process is being stopped
-    t_step = 1
+    t_step = 10
     while True:
         learner.update()
         time.sleep(t_step)
