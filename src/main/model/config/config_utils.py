@@ -33,7 +33,6 @@ class ConfigUtils:
             num_predators=env_conf["num_predators"],
             num_preys=env_conf["num_preys"],
             num_states=env_conf["num_states"],
-            num_actions=env_conf["num_actions"],
         )
 
     def replay_buffer_configuration(self) -> ReplayBufferServiceConfig:

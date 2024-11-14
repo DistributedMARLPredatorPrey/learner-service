@@ -20,7 +20,6 @@ class Learner:
         num_predators: int,
         num_preys: int,
         num_states: int,
-        num_actions: int,
         actor_sender_controller: ActorSenderController,
     ):
         """
@@ -37,7 +36,7 @@ class Learner:
         """
         self.replay_buffer_controller = replay_buffer_controller
         self.num_states = num_states
-        self.num_actions = num_actions
+        self.num_actions = 2
         self.num_agents = num_predators + num_preys
 
         # Learning rate for actor-critic models
@@ -52,8 +51,8 @@ class Learner:
         self.critic_optimizers = []
         for i in range(2):
             critic_model, target_critic = (
-                Critic(num_states, num_actions, self.num_agents).model,
-                Critic(num_states, num_actions, self.num_agents).model,
+                Critic(num_states, self.num_actions, self.num_agents).model,
+                Critic(num_states, self.num_actions, self.num_agents).model,
             )
             target_critic.set_weights(critic_model.get_weights())
             critic_opt = tf.keras.optimizers.Adam(self.critic_lr)
@@ -98,13 +97,6 @@ class Learner:
         Slowly updates target parameters according to the tau rate <<1
         :return:
         """
-        # for i in range(2):
-        #     target_weights, weights = (
-        #         self.target_actcritic_value = self.critic_models[model_i]ors[i].variables,
-        #         self.actor_models[i].variables,
-        #     )
-        #     for a, b in zip(target_weights, weights):
-        #         a.assign(b * self.tau + a * (1 - self.tau))
         for i in range(2):
             self.__update_target(self.target_actors[i], self.actor_models[i], self.tau)
             self.__update_target(

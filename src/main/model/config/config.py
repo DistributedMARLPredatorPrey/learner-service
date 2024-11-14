@@ -10,7 +10,6 @@ class EnvironmentConfig:
     num_predators: int
     num_preys: int
     num_states: int
-    num_actions: int
 
 
 @dataclass(frozen=True)

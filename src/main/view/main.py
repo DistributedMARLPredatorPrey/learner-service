@@ -31,7 +31,6 @@ if __name__ == "__main__":
         num_predators=env_config.num_predators,
         num_preys=env_config.num_preys,
         num_states=env_config.num_states,
-        num_actions=env_config.num_actions,
         actor_sender_controller=ActorSenderController(
             config_utils.replay_buffer_configuration().project_root_path,
             config_utils.learner_service_configuration().pubsub_broker,
