@@ -17,12 +17,10 @@ class Learner:
     def __init__(
         self,
         replay_buffer_controller: ReplayBufferController,
-        agent_type: str,
         num_predators: int,
         num_preys: int,
         num_states: int,
         num_actions: int,
-        save_path: str,
         actor_sender_controller: ActorSenderController,
     ):
         """
@@ -79,7 +77,6 @@ class Learner:
         self.gamma = 0.99
         # Used to update target networks
         self.tau = 0.005
-        self.save_path = save_path
         # Send initial actor without training
         self.actor_sender_controller.send_actors(
             (self.actor_models[0], self.actor_models[1])

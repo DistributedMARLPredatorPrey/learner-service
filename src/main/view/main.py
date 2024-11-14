@@ -28,13 +28,12 @@ if __name__ == "__main__":
     logging.info("Starting Learner Service...")
     learner = Learner(
         replay_buffer_controller=ReplayBufferController(replay_buffer_service_config),
-        agent_type=replay_buffer_service_config.agent_type,
         num_predators=env_config.num_predators,
         num_preys=env_config.num_preys,
         num_states=env_config.num_states,
         num_actions=env_config.num_actions,
-        save_path=replay_buffer_service_config.agent_type,
         actor_sender_controller=ActorSenderController(
+            config_utils.replay_buffer_configuration().project_root_path,
             config_utils.learner_service_configuration().pubsub_broker,
             ("predator-actor-model", "prey-actor-model"),
         ),
