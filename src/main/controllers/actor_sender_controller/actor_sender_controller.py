@@ -8,9 +8,11 @@ from src.main.model.actor_critic.actor import Actor
 
 
 class ActorSenderController:
-    def __init__(self, broker_host: str, routing_keys: Tuple[str, str]):
+    def __init__(
+        self, project_root_path: str, broker_host: str, routing_keys: Tuple[str, str]
+    ):
         self.broker_host = broker_host
-        self.path = os.path.dirname(os.path.abspath(__file__))
+        self.path = os.path.join(project_root_path, "src", "main", "resources")
         self.routing_keys = routing_keys
         self.connection = pika.BlockingConnection(
             pika.ConnectionParameters(host=self.broker_host, heartbeat=600)
@@ -19,7 +21,7 @@ class ActorSenderController:
         self.channel.exchange_declare(exchange="topic_exchange", exchange_type="topic")
 
     def __send(self, routing_key, actor_model: keras.Model):
-        file_path = f"{self.path}/resources/{routing_key}.keras"
+        file_path = os.path.join(self.path, f"{routing_key}.keras")
         actor_model.save(file_path)
         with open(file_path, "rb") as actor_model_file:
             actor_model_bytes = actor_model_file.read()

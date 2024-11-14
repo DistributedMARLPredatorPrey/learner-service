@@ -15,7 +15,6 @@ class ReplayBufferController:
         self.replay_buffer_host = replay_buffer_service_config.replay_buffer_host
         self.replay_buffer_port = replay_buffer_service_config.replay_buffer_port
         self.batch_size = replay_buffer_service_config.batch_size
-        self.agent_type = replay_buffer_service_config.agent_type
 
     def sample_batch(self) -> tuple:
         """
@@ -39,10 +38,9 @@ class ReplayBufferController:
     def __convert_data_batch(data_dict: Dict) -> Tuple:
         """
         Converts a data batch of type Dict to a Tuple
-        :param data_dict:
-        :return:
+        :param data_dict: Data batch as a dict
+        :return: Data batch as a tuple of tf Tensors
         """
-        # logging.info(f"DATA DICT {data_dict}")
         return tuple(
             [
                 tf.convert_to_tensor(
@@ -52,6 +50,6 @@ class ReplayBufferController:
                     ],
                     dtype=tf.float32,
                 )
-                for c in ["State", "Action", "Reward", "Next state"]
+                for c in ["State", "Action", "Reward", "Next State"]
             ]
         )
