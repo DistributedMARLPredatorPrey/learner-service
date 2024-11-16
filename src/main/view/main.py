@@ -7,8 +7,9 @@ from src.main.controllers.actor_sender_controller.actor_sender_controller import
 from src.main.controllers.buffer_controller.replay_buffer_controller import (
     ReplayBufferController,
 )
-
 from src.main.controllers.learner_controller.learner import Learner
+
+from src.main.controllers.learner_controller.maddpg.maddpg_learner import MADDPGLearner
 from src.main.model.config.config import (
     EnvironmentConfig,
     ReplayBufferServiceConfig,
@@ -26,11 +27,12 @@ if __name__ == "__main__":
     )
     # Create the learner, passing to it a replay buffer controller
     logging.info("Starting Learner Service...")
-    learner = Learner(
+    learner: Learner = MADDPGLearner(
         replay_buffer_controller=ReplayBufferController(replay_buffer_service_config),
         num_predators=env_config.num_predators,
         num_preys=env_config.num_preys,
         num_states=env_config.num_states,
+        root_project_path=replay_buffer_service_config.project_root_path,
         actor_sender_controller=ActorSenderController(
             config_utils.replay_buffer_configuration().project_root_path,
             config_utils.learner_service_configuration().pubsub_broker,
