@@ -6,7 +6,8 @@ with open("requirements.txt") as f:
 setup(
     name="learner_controller-service",
     description="Learner service",
-    url="#",
+    version="1.0.0",
+    url="https://distributedmarlpredatorprey.github.io/learner-service/",
     author="Luca Fabri",
     author_email="luca.fabri1999@gmail.com",
     packages=find_packages(where="src"),

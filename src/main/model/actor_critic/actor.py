@@ -7,28 +7,20 @@ class Actor:
     def __init__(self, num_states: int):
         """
         The Actor network is responsible to choose the action, given the state.
-        The action is a tuple (acceleration, angular_acceleration).
+        The action is a tuple (velocity, angular_velocity).
         :param num_states: number of states
         """
         last_init = initializers.RandomUniform(minval=-0.003, maxval=0.003)
-        # the actor has separate towers for action and speed
-        # in this way we can train them separately
         inputs = layers.Input(shape=(num_states,))
-        acc_out = layers.Dense(128, activation="relu")(inputs)
-        acc_out = layers.Dense(64, activation="relu")(acc_out)
-        # acceleration
-        acc_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
-            acc_out
+        inner = layers.Dense(128, activation="relu")(inputs)
+        inner = layers.Dense(64, activation="relu")(inner)
+        # velocity
+        vel_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
+            inner
         )
-
-        ang_acc_out = layers.Dense(128, activation="relu")(inputs)
-        ang_acc_out = layers.Dense(64, activation="relu")(ang_acc_out)
-        # angular acceleration
-        ang_acc_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
-            ang_acc_out
+        # angular velocity
+        ang_vel_out = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(
+            inner
         )
-
-        outputs = layers.Concatenate()([acc_out, ang_acc_out])
-
-        # outputs = outputs * upper_bound #resize the range, if required
+        outputs = layers.Concatenate()([vel_out, ang_vel_out])
         self.model = tf.keras.Model(inputs, outputs, name="actor")

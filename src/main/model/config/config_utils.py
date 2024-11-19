@@ -32,10 +32,7 @@ class ConfigUtils:
         return EnvironmentConfig(
             num_predators=env_conf["num_predators"],
             num_preys=env_conf["num_preys"],
-            acc_lower_bound=env_conf["acc_lower_bound"],
-            acc_upper_bound=env_conf["acc_upper_bound"],
             num_states=env_conf["num_states"],
-            num_actions=env_conf["num_actions"],
         )
 
     def replay_buffer_configuration(self) -> ReplayBufferServiceConfig:
@@ -44,7 +41,7 @@ class ConfigUtils:
         :return: replay buffer config
         """
         return ReplayBufferServiceConfig(
-            agent_type=os.environ.get("AGENT_TYPE"),
+            project_root_path=os.environ.get("PROJECT_ROOT_PATH"),
             batch_size=int(os.environ.get("BATCH_SIZE")),
             replay_buffer_host=os.environ.get("REPLAY_BUFFER_HOST"),
             replay_buffer_port=int(os.environ.get("REPLAY_BUFFER_PORT")),

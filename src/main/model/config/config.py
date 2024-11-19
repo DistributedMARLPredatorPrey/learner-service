@@ -10,9 +10,6 @@ class EnvironmentConfig:
     num_predators: int
     num_preys: int
     num_states: int
-    num_actions: int
-    acc_lower_bound: float
-    acc_upper_bound: float
 
 
 @dataclass(frozen=True)
@@ -21,8 +18,8 @@ class ReplayBufferServiceConfig:
     Sum type modelling the replay buffer configuration.
     """
 
+    project_root_path: str
     batch_size: int
-    agent_type: str
     replay_buffer_host: str
     replay_buffer_port: int
 

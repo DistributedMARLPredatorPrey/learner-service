@@ -14,20 +14,13 @@ class Critic:
         """
         # State as input
         state_input = layers.Input(shape=(num_states * num_agents,))
-        state_out = layers.Dense(128, activation="relu")(state_input)
-        state_out = layers.Dense(256, activation="relu")(state_out)
-
         # Action as input
         action_input = [layers.Input(shape=num_actions) for _ in range(num_agents)]
         action_input_concat = layers.Concatenate()(action_input)
-        action_out = layers.Dense(
-            256,
-            activation="relu",
-        )(action_input_concat)
+        concat = layers.Concatenate()([state_input, action_input_concat])
 
-        concat = layers.Concatenate()([state_out, action_out])
-
-        out = layers.Dense(128, activation="relu")(concat)
+        out = layers.Dense(256, activation="relu")(concat)
+        out = layers.Dense(128, activation="relu")(out)
         out = layers.Dense(128, activation="relu")(out)
         # Outputs single value
         outputs = layers.Dense(1)(out)
