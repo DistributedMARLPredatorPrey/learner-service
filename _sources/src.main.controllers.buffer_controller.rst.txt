@@ -4,6 +4,14 @@ src.main.controllers.buffer\_controller package
 Submodules
 ----------
 
+src.main.controllers.buffer\_controller.remote\_replay\_buffer\_controller module
+---------------------------------------------------------------------------------
+
+.. automodule:: src.main.controllers.buffer_controller.remote_replay_buffer_controller
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.main.controllers.buffer\_controller.replay\_buffer\_controller module
 -------------------------------------------------------------------------
 

@@ -1,6 +1,14 @@
 src.main.controllers.learner\_controller package
 ================================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.main.controllers.learner_controller.maddpg
+
 Submodules
 ----------
 
@@ -8,6 +16,14 @@ src.main.controllers.learner\_controller.learner module
 -------------------------------------------------------
 
 .. automodule:: src.main.controllers.learner_controller.learner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.main.controllers.learner\_controller.utils module
+-----------------------------------------------------
+
+.. automodule:: src.main.controllers.learner_controller.utils
    :members:
    :undoc-members:
    :show-inheritance:

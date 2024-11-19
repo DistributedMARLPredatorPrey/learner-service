@@ -1,0 +1,21 @@
+src.main.controllers.learner\_controller.maddpg package
+=======================================================
+
+Submodules
+----------
+
+src.main.controllers.learner\_controller.maddpg.maddpg\_learner module
+----------------------------------------------------------------------
+
+.. automodule:: src.main.controllers.learner_controller.maddpg.maddpg_learner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.main.controllers.learner_controller.maddpg
+   :members:
+   :undoc-members:
+   :show-inheritance:

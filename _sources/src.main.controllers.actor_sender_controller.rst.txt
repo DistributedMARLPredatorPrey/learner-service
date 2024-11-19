@@ -12,6 +12,14 @@ src.main.controllers.actor\_sender\_controller.actor\_sender\_controller module
    :undoc-members:
    :show-inheritance:
 
+src.main.controllers.actor\_sender\_controller.pubsub\_actor\_sender\_controller module
+---------------------------------------------------------------------------------------
+
+.. automodule:: src.main.controllers.actor_sender_controller.pubsub_actor_sender_controller
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

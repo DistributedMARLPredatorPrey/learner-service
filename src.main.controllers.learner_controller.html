@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>src.main.controllers.learner_controller package &mdash; Learner Service  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -45,8 +43,20 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">src.main.controllers.learner_controller package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#src-main-controllers-learner-controller-learner-module">src.main.controllers.learner_controller.learner module</a></li>
+<li><a class="reference internal" href="#module-src.main.controllers.learner_controller.learner">src.main.controllers.learner_controller.learner module</a><ul>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.learner.Learner"><code class="docutils literal notranslate"><span class="pre">Learner</span></code></a><ul>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.learner.Learner.update"><code class="docutils literal notranslate"><span class="pre">Learner.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.main.controllers.learner_controller.utils">src.main.controllers.learner_controller.utils module</a><ul>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.utils.save_pred_prey_losses"><code class="docutils literal notranslate"><span class="pre">save_pred_prey_losses()</span></code></a></li>
+<li><a class="reference internal" href="#src.main.controllers.learner_controller.utils.setup_pred_prey_losses_files"><code class="docutils literal notranslate"><span class="pre">setup_pred_prey_losses_files()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-src.main.controllers.learner_controller">Module contents</a></li>
 </ul>
 </li>
@@ -78,11 +88,62 @@
              
   <section id="src-main-controllers-learner-controller-package">
 <h1>src.main.controllers.learner_controller package<a class="headerlink" href="#src-main-controllers-learner-controller-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html">src.main.controllers.learner_controller.maddpg package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#module-src.main.controllers.learner_controller.maddpg.maddpg_learner">src.main.controllers.learner_controller.maddpg.maddpg_learner module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#src.main.controllers.learner_controller.maddpg.maddpg_learner.MADDPGLearner"><code class="docutils literal notranslate"><span class="pre">MADDPGLearner</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#src.main.controllers.learner_controller.maddpg.maddpg_learner.MADDPGLearner.update"><code class="docutils literal notranslate"><span class="pre">MADDPGLearner.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#module-src.main.controllers.learner_controller.maddpg">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="src-main-controllers-learner-controller-learner-module">
-<h2>src.main.controllers.learner_controller.learner module<a class="headerlink" href="#src-main-controllers-learner-controller-learner-module" title="Link to this heading"></a></h2>
+<section id="module-src.main.controllers.learner_controller.learner">
+<span id="src-main-controllers-learner-controller-learner-module"></span><h2>src.main.controllers.learner_controller.learner module<a class="headerlink" href="#module-src.main.controllers.learner_controller.learner" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.learner.Learner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.main.controllers.learner_controller.learner.</span></span><span class="sig-name descname"><span class="pre">Learner</span></span><a class="headerlink" href="#src.main.controllers.learner_controller.learner.Learner" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.learner.Learner.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.learner_controller.learner.Learner.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.main.controllers.learner_controller.utils">
+<span id="src-main-controllers-learner-controller-utils-module"></span><h2>src.main.controllers.learner_controller.utils module<a class="headerlink" href="#module-src.main.controllers.learner_controller.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.utils.save_pred_prey_losses">
+<span class="sig-prename descclassname"><span class="pre">src.main.controllers.learner_controller.utils.</span></span><span class="sig-name descname"><span class="pre">save_pred_prey_losses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_project_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predator_losses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prey_losses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.learner_controller.utils.save_pred_prey_losses" title="Link to this definition"></a></dt>
+<dd><p>Save loss of Predator and Prey Critic network to file
+:param root_project_path: Root path of the project
+:param predator_losses: Losses of Predator’s Critic
+:param prey_losses: Losses of Prey’s Critic
+:return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.main.controllers.learner_controller.utils.setup_pred_prey_losses_files">
+<span class="sig-prename descclassname"><span class="pre">src.main.controllers.learner_controller.utils.</span></span><span class="sig-name descname"><span class="pre">setup_pred_prey_losses_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_project_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.main.controllers.learner_controller.utils.setup_pred_prey_losses_files" title="Link to this definition"></a></dt>
+<dd><p>Setups the files for storing Critic network losses
+:param root_project_path: Root path of the project
+:return:</p>
+</dd></dl>
+
 </section>
 <section id="module-src.main.controllers.learner_controller">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.main.controllers.learner_controller" title="Link to this heading"></a></h2>

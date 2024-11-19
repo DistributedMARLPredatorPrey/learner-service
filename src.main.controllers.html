@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>src.main.controllers package &mdash; Learner Service  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -83,12 +81,26 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html">src.main.controllers.actor_sender_controller package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#src-main-controllers-actor-sender-controller-actor-sender-controller-module">src.main.controllers.actor_sender_controller.actor_sender_controller module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#module-src.main.controllers.actor_sender_controller.actor_sender_controller">src.main.controllers.actor_sender_controller.actor_sender_controller module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#src.main.controllers.actor_sender_controller.actor_sender_controller.ActorSenderController"><code class="docutils literal notranslate"><span class="pre">ActorSenderController</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#src.main.controllers.actor_sender_controller.actor_sender_controller.ActorSenderController.send_actors"><code class="docutils literal notranslate"><span class="pre">ActorSenderController.send_actors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#src-main-controllers-actor-sender-controller-pubsub-actor-sender-controller-module">src.main.controllers.actor_sender_controller.pubsub_actor_sender_controller module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.actor_sender_controller.html#module-src.main.controllers.actor_sender_controller">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.main.controllers.buffer_controller.html">src.main.controllers.buffer_controller package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.buffer_controller.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.buffer_controller.html#module-src.main.controllers.buffer_controller.remote_replay_buffer_controller">src.main.controllers.buffer_controller.remote_replay_buffer_controller module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.buffer_controller.html#src.main.controllers.buffer_controller.remote_replay_buffer_controller.RemoteReplayBufferController"><code class="docutils literal notranslate"><span class="pre">RemoteReplayBufferController</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.buffer_controller.html#src.main.controllers.buffer_controller.remote_replay_buffer_controller.RemoteReplayBufferController.sample_batch"><code class="docutils literal notranslate"><span class="pre">RemoteReplayBufferController.sample_batch()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.buffer_controller.html#module-src.main.controllers.buffer_controller.replay_buffer_controller">src.main.controllers.buffer_controller.replay_buffer_controller module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="src.main.controllers.buffer_controller.html#src.main.controllers.buffer_controller.replay_buffer_controller.ReplayBufferController"><code class="docutils literal notranslate"><span class="pre">ReplayBufferController</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="src.main.controllers.buffer_controller.html#src.main.controllers.buffer_controller.replay_buffer_controller.ReplayBufferController.sample_batch"><code class="docutils literal notranslate"><span class="pre">ReplayBufferController.sample_batch()</span></code></a></li>
@@ -100,8 +112,28 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.main.controllers.learner_controller.html">src.main.controllers.learner_controller package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html">src.main.controllers.learner_controller.maddpg package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#module-src.main.controllers.learner_controller.maddpg.maddpg_learner">src.main.controllers.learner_controller.maddpg.maddpg_learner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.learner_controller.maddpg.html#module-src.main.controllers.learner_controller.maddpg">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#src-main-controllers-learner-controller-learner-module">src.main.controllers.learner_controller.learner module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#module-src.main.controllers.learner_controller.learner">src.main.controllers.learner_controller.learner module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.learner_controller.html#src.main.controllers.learner_controller.learner.Learner"><code class="docutils literal notranslate"><span class="pre">Learner</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.main.controllers.learner_controller.html#src.main.controllers.learner_controller.learner.Learner.update"><code class="docutils literal notranslate"><span class="pre">Learner.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#module-src.main.controllers.learner_controller.utils">src.main.controllers.learner_controller.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.learner_controller.html#src.main.controllers.learner_controller.utils.save_pred_prey_losses"><code class="docutils literal notranslate"><span class="pre">save_pred_prey_losses()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.main.controllers.learner_controller.html#src.main.controllers.learner_controller.utils.setup_pred_prey_losses_files"><code class="docutils literal notranslate"><span class="pre">setup_pred_prey_losses_files()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="src.main.controllers.learner_controller.html#module-src.main.controllers.learner_controller">Module contents</a></li>
 </ul>
 </li>
