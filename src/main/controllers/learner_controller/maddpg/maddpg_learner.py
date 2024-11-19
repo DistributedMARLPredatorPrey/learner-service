@@ -84,7 +84,7 @@ class MADDPGLearner(Learner):
         self.tau = 0.005
         # Send initial actor without training
         self.actor_sender_controller.send_actors(
-            (self.actor_models[0], self.actor_models[1])
+            predator_actor=self.actor_models[0], prey_actor=self.actor_models[1]
         )
         self.root_project_path = root_project_path
         setup_pred_prey_losses_files(root_project_path)
@@ -96,9 +96,7 @@ class MADDPGLearner(Learner):
         """
         self.__update_actors(self.__update_critics())
         self.__update_targets()
-        self.actor_sender_controller.send_actors(
-            (self.actor_models[0], self.actor_models[1])
-        )
+        return self.actor_models[0], self.actor_models[1]
 
     def __update_targets(self):
         """
